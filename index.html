@@ -1615,36 +1615,49 @@ const girls = [
             switchScreen('dialogue');
         }
 
-        // 加载女孩立绘
-        function loadGirlPortrait(girl) {
-            const girlId = girl.id;
-            
-            // 清空画布
-            portraitCtx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
-            
-            if (gameState.girlPortraits[girlId]) {
-                // 如果有已保存的立绘，加载它
-                const img = new Image();
-                img.onload = () => {
-                    // 保持比例填充画布
-                    const scale = Math.max(
-                        portraitCanvas.width / img.width,
-                        portraitCanvas.height / img.height
-                    );
-                    const dw = img.width * scale;
-                    const dh = img.height * scale;
-                    const dx = (portraitCanvas.width - dw) / 2;
-                    const dy = (portraitCanvas.height - dh) / 2;
-                    
-                    portraitCtx.drawImage(img, dx, dy, dw, dh);
-                };
-                img.src = gameState.girlPortraits[girlId];
-            } else {
-                // 否则绘制默认占位符
-                drawPlaceholderPortrait(girl);
-            }
-        }
+      function loadGirlPortrait(girl) {
+    const girlId = girl.id;
 
+    // 清空画布
+    portraitCtx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
+
+    // 优先级 1：用户上传过的立绘
+    if (gameState.girlPortraits[girlId]) {
+        const img = new Image();
+        img.onload = () => drawImageToCanvas(img);
+        img.src = gameState.girlPortraits[girlId];
+        return;
+    }
+
+    // 优先级 2：本地 portraits/idXX.jpg
+    if (girl.portrait) {
+        const img = new Image();
+        img.onload = () => drawImageToCanvas(img);
+        img.onerror = () => {
+            console.warn("立绘加载失败：", girl.portrait);
+            drawPlaceholderPortrait(girl);
+        };
+        img.src = girl.portrait;
+        return;
+    }
+
+    // 兜底：占位符
+    drawPlaceholderPortrait(girl);
+}
+        function drawImageToCanvas(img) {
+    const cw = portraitCanvas.width;
+    const ch = portraitCanvas.height;
+
+    // 等比填充（类似 background-size: cover）
+    const scale = Math.max(cw / img.width, ch / img.height);
+    const dw = img.width * scale;
+    const dh = img.height * scale;
+    const dx = (cw - dw) / 2;
+    const dy = (ch - dh) / 2;
+
+    portraitCtx.clearRect(0, 0, cw, ch);
+    portraitCtx.drawImage(img, dx, dy, dw, dh);
+}
         // 绘制默认占位符立绘
         function drawPlaceholderPortrait(girl) {
             // 创建渐变背景
