@@ -4,24 +4,48 @@
   <meta charset="UTF-8">
   <title>Portrait Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial;
+    }
+    h1 {
+      text-align: center;
+      padding-top: 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 图片自适应屏幕大小 */
+      gap: 12px; /* 设置图片间隙 */
+      padding: 12px;
+    }
+    .gallery img {
+      width: 100%; /* 确保图片宽度占满单元格 */
+      height: auto; /* 保持图片比例 */
+      object-fit: cover; /* 确保图片适配，填满每个格子 */
+      border-radius: 8px; /* 可选：添加圆角效果 */
+    }
+  </style>
 </head>
-<body style="margin:0; background:#111; color:#fff; font-family:Arial;">
+<body>
 
-<h1 style="text-align:center;">角色画廊</h1>
+<h1>角色画廊</h1>
 
-<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; padding:12px;">
-  <img src="assets/portraits/id01.jpg">
-  <img src="assets/portraits/id02.jpg">
-  <img src="assets/portraits/id03.jpg">
-  <img src="assets/portraits/id04.jpg">
-  <img src="assets/portraits/id05.jpg">
-  <img src="assets/portraits/id06.jpg">
-  <img src="assets/portraits/id07.jpg">
-  <img src="assets/portraits/id08.jpg">
-  <img src="assets/portraits/id09.jpg">
-  <img src="assets/portraits/id10.jpg">
-  <img src="assets/portraits/id11.jpg">
-  <img src="assets/portraits/id12.jpg">
+<div class="gallery">
+  <img src="assets/portraits/id01.jpg" alt="id01">
+  <img src="assets/portraits/id02.jpg" alt="id02">
+  <img src="assets/portraits/id03.jpg" alt="id03">
+  <img src="assets/portraits/id04.jpg" alt="id04">
+  <img src="assets/portraits/id05.jpg" alt="id05">
+  <img src="assets/portraits/id06.jpg" alt="id06">
+  <img src="assets/portraits/id07.jpg" alt="id07">
+  <img src="assets/portraits/id08.jpg" alt="id08">
+  <img src="assets/portraits/id09.jpg" alt="id09">
+  <img src="assets/portraits/id10.jpg" alt="id10">
+  <img src="assets/portraits/id11.jpg" alt="id11">
+  <img src="assets/portraits/id12.jpg" alt="id12">
 </div>
 
 </body>
