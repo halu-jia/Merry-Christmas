@@ -13,6 +13,16 @@
             box-sizing: border-box;
             user-select: none;
         }
+        <style>
+    .adaptive-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
+
+<!-- 特定的图片使用 .adaptive-image 类 -->
+<img src="path/to/your/image.jpg" class="adaptive-image" alt="描述图片">
 
         body {
             font-family: 'Inter', sans-serif;
