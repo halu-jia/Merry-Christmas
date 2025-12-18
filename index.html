@@ -1270,7 +1270,7 @@ const girls = [
             "钢琴的严谨如何影响我的自由创作？纪律带来真正的自由。",
             "就像进击的巨人，没有城墙的保护，就没有探索世界的勇气。",
             "东京香蕉面包和进击的巨人有什么关联？都是混合体！",
-            "香蕉的甜 and 面包的实，人类的脆弱和巨人的力量。矛盾中的和谐最迷人。",
+            "香蕉的甜和面包的实，人类的脆弱和巨人的力量。矛盾中的和谐最迷人。",
             "钢琴、绘画、摄影...都是我与世界对话的不同语言。",
             "圣诞快乐！愿你也找到属于自己的表达方式。"
         ],
@@ -1363,6 +1363,26 @@ const girls = [
     }
 ];
 
+function renderGirls() {
+    const map = document.getElementById('city-map'); // 假设你的容器ID是这个
+    
+    girls.forEach(girl => {
+        const node = document.createElement('div');
+        node.className = 'girl-node';
+        node.style.left = `${girl.position.x}%`;
+        node.style.top = `${girl.position.y}%`;
+
+        node.innerHTML = `
+            <div class="avatar-container" style="border: 3px solid ${girl.color}">
+                < img src="${girl.portrait}" alt="${girl.name}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                <span class="icon-tag">${girl.icon}</span>
+            </div>
+            <div class="label-tag">${girl.name}</div>
+        `;
+        
+        map.appendChild(node);
+    });
+}
         // 游戏状态
         const gameState = {
             currentScreen: 'loading',
