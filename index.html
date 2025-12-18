@@ -1505,29 +1505,65 @@ const girls = [
             });
         }
 
-        // 打开大门
-        function openGate() {
-            const leftDoor = document.querySelector('.left-door');
-            const rightDoor = document.querySelector('.right-door');
-            const gate = document.getElementById('gate');
-            
-            // 播放音效
-            doorSound.play();
-            bgMusic.volume = 0.3;
-            bgMusic.play();
-            
-            // 动画效果
-            leftDoor.style.transform = 'perspective(1000px) rotateY(-100deg)';
-            rightDoor.style.transform = 'perspective(1000px) rotateY(100deg)';
-            gate.style.cursor = 'default';
-            
-            // 过渡到地图界面
-            setTimeout(() => {
-                switchScreen('map');
-                createShops();
-            }, 1500);
-        }
+       function openGate() {
+    console.log("门环被点击了"); // 用于调试，确保点击事件被触发
 
+    // 获取门和门的两扇门元素
+    const leftDoor = document.querySelector('.left-door');
+    const rightDoor = document.querySelector('.right-door');
+    const gate = document.getElementById('gate');
+
+    // 播放门响音效
+    const doorSound = document.getElementById('door-sound');
+    if (doorSound) {
+        doorSound.play(); // 播放门音效
+    } else {
+        console.error("门音效没有加载！");
+    }
+
+    // 播放背景音乐
+    const bgMusic = document.getElementById('bg-music');
+    if (bgMusic) {
+        bgMusic.volume = 0.3; // 设置音量
+        bgMusic.play(); // 播放背景音乐
+    } else {
+        console.error("背景音乐没有加载！");
+    }
+
+    // 设置门的开门动画效果
+    if (leftDoor && rightDoor) {
+        leftDoor.style.transform = 'perspective(1000px) rotateY(-100deg)';
+        rightDoor.style.transform = 'perspective(1000px) rotateY(100deg)';
+    } else {
+        console.error("门元素未找到！");
+    }
+
+    // 设置大门指针状态为不可点击
+    if (gate) {
+        gate.style.cursor = 'default';
+    }
+
+    // 过渡到地图界面，确保切换时的延迟效果
+    setTimeout(() => {
+        switchScreen('map');
+        createShops();
+    }, 1500); // 1500ms后切换到地图界面
+}
+
+// 确保点击事件能绑定到门环
+function setupDoorKnocker() {
+    const doorKnocker = document.getElementById('door-knocker');
+    if (doorKnocker) {
+        doorKnocker.addEventListener('click', openGate);
+    } else {
+        console.error("门环元素未找到！");
+    }
+}
+
+// 初始化时绑定门环点击事件
+window.addEventListener('DOMContentLoaded', function() {
+    setupDoorKnocker(); // 确保绑定点击事件
+});
         // 切换屏幕
         function switchScreen(screenName) {
             // 隐藏所有屏幕
