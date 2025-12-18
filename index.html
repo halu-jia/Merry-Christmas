@@ -1918,6 +1918,25 @@ function openDialogue(girl) {
 
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', init);
+        <script>
+const fileInput = document.getElementById('file-input');
+const portraitImg = document.getElementById('girl-portrait');
+
+fileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    // 只允许图片
+    if (!file.type.startsWith('image/')) {
+        alert('请选择图片文件');
+        return;
+    }
+
+    // 用浏览器的临时 URL 显示图片（不走路径）
+    const url = URL.createObjectURL(file);
+    portraitImg.src = url;
+});
+</script>
     </script>
 </body>
 </html>
