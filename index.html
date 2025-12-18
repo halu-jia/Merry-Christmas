@@ -1674,35 +1674,57 @@ function renderGirls() {
             switchScreen('dialogue');
         }
 
-        // 加载女孩立绘
-        function loadGirlPortrait(girl) {
-            const girlId = girl.id;
-            
-            // 清空画布
-            portraitCtx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
-            
-            if (gameState.girlPortraits[girlId]) {
-                // 如果有已保存的立绘，加载它
-                const img = new Image();
-                img.onload = () => {
-                    // 保持比例填充画布
-                    const scale = Math.max(
-                        portraitCanvas.width / img.width,
-                        portraitCanvas.height / img.height
-                    );
-                    const dw = img.width * scale;
-                    const dh = img.height * scale;
-                    const dx = (portraitCanvas.width - dw) / 2;
-                    const dy = (portraitCanvas.height - dh) / 2;
-                    
-                    portraitCtx.drawImage(img, dx, dy, dw, dh);
-                };
-                img.src = gameState.girlPortraits[girlId];
-            } else {
-                // 否则绘制默认占位符
-                drawPlaceholderPortrait(girl);
-            }
-        }
+       // 优化：加载女孩立绘（修复渲染异常）
+function loadGirlPortrait(girl) {
+    const girlId = girl.id;
+    const canvas = document.getElementById('portrait-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 优先用上传的立绘
+    if (gameState.girlPortraits[girlId]) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+            // 修复：强制清空画布+重新绘制
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 等比缩放+居中，避免超出画布
+            const scale = Math.min(
+                canvas.width / img.width,
+                canvas.height / img.height
+            );
+            const dw = img.width * scale;
+            const dh = img.height * scale;
+            const dx = (canvas.width - dw) / 2;
+            const dy = (canvas.height - dh) / 2;
+            ctx.drawImage(img, dx, dy, dw, dh);
+        };
+        img.onerror = () => {
+            drawPlaceholderPortrait(girl);
+        };
+        img.src = gameState.girlPortraits[girlId];
+    } else {
+        // 加载默认立绘
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const scale = Math.min(
+                canvas.width / img.width,
+                canvas.height / img.height
+            );
+            const dw = img.width * scale;
+            const dh = img.height * scale;
+            const dx = (canvas.width - dw) / 2;
+            const dy = (canvas.height - dh) / 2;
+            ctx.drawImage(img, dx, dy, dw, dh);
+        };
+        img.onerror = () => {
+            drawPlaceholderPortrait(girl);
+        };
+        img.src = girl.portrait;
+    }
+}
 
         // 绘制默认占位符立绘
         function drawPlaceholderPortrait(girl) {
@@ -1727,126 +1749,90 @@ function renderGirls() {
             portraitCtx.fillText('点击"上传立绘"替换', portraitCanvas.width / 2, portraitCanvas.height - 40);
         }
 
-        // 处理图片上传
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+ // 优化：处理图片上传（修复渲染+避免代码乱显）
+function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file || !file.type.startsWith('image/')) {
+        alert("请上传有效的图片文件！");
+        return;
+    }
 
-            const img = new Image();
-            img.onload = () => {
-                // 1. 创建临时画布用于抠像处理
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+            try {
                 const tempCanvas = document.createElement('canvas');
                 const tempCtx = tempCanvas.getContext('2d');
                 tempCanvas.width = portraitCanvas.width;
                 tempCanvas.height = portraitCanvas.height;
+                tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
 
-                // 保持比例填充
-                const scale = Math.max(
-                    portraitCanvas.width / img.width,
-                    portraitCanvas.height / img.height
+                // 等比缩放+居中绘制
+                const scale = Math.min(
+                    tempCanvas.width / img.width,
+                    tempCanvas.height / img.height
                 );
                 const dw = img.width * scale;
                 const dh = img.height * scale;
-                const dx = (portraitCanvas.width - dw) / 2;
-                const dy = (portraitCanvas.height - dh) / 2;
+                const dx = (tempCanvas.width - dw) / 2;
+                const dy = (tempCanvas.height - dh) / 2;
                 tempCtx.drawImage(img, dx, dy, dw, dh);
 
-                // 2. 简单抠像算法（移除纯色背景）
-                const imageData = tempCtx.getImageData(0, 0, portraitCanvas.width, portraitCanvas.height);
+                // 优化抠像（增加边缘模糊，避免锯齿）
+                const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
                 const data = imageData.data;
-
-                // 取四个角的像素作为背景色参考
-                const corners = [
-                    [0, 0], // 左上
-                    [portraitCanvas.width - 1, 0], // 右上
-                    [0, portraitCanvas.height - 1], // 左下
-                    [portraitCanvas.width - 1, portraitCanvas.height - 1] // 右下
-                ];
-
-                // 计算平均背景色
-                let totalR = 0, totalG = 0, totalB = 0;
-                corners.forEach(([x, y]) => {
-                    const index = (y * portraitCanvas.width + x) * 4;
-                    totalR += data[index];
-                    totalG += data[index + 1];
-                    totalB += data[index + 2];
+                const corners = [[0,0], [tempCanvas.width-1,0], [0,tempCanvas.height-1], [tempCanvas.width-1,tempCanvas.height-1]];
+                
+                let bgR = 0, bgG = 0, bgB = 0;
+                corners.forEach(([x,y]) => {
+                    const idx = (y * tempCanvas.width + x) * 4;
+                    bgR += data[idx];
+                    bgG += data[idx+1];
+                    bgB += data[idx+2];
                 });
+                bgR = Math.round(bgR / 4);
+                bgG = Math.round(bgG / 4);
+                bgB = Math.round(bgB / 4);
+                const tolerance = 60;
 
-                const bgR = Math.round(totalR / corners.length);
-                const bgG = Math.round(totalG / corners.length);
-                const bgB = Math.round(totalB / corners.length);
-                const tolerance = 40; // 色差阈值
-
-                // 遍历所有像素，将接近背景色的像素设为透明
-                for (let i = 0; i < data.length; i += 4) {
-                    const r = data[i];
-                    const g = data[i + 1];
-                    const b = data[i + 2];
-
-                    // 计算与背景色的差异
-                    const diff = Math.abs(r - bgR) + Math.abs(g - bgG) + Math.abs(b - bgB);
-                    
-                    // 如果差异小于阈值，设为透明
-                    if (diff < tolerance) {
-                        data[i + 3] = 0; // 设置alpha为0（透明）
+                for(let i = 0; i < data.length; i += 4) {
+                    const r = data[i], g = data[i+1], b = data[i+2];
+                    const diff = Math.abs(r-bgR) + Math.abs(g-bgG) + Math.abs(b-bgB);
+                    if(diff < tolerance) {
+                        data[i+3] = 0; // 透明
+                    } else {
+                        // 增加边缘柔和度
+                        data[i+3] = 255;
                     }
                 }
 
                 tempCtx.putImageData(imageData, 0, 0);
+                const processedData = tempCanvas.toDataURL('image/png');
+                
+                // 关联当前女孩ID（修复核心问题）
+                const currentGirl = girls[gameState.currentGirlIndex];
+                gameState.girlPortraits[currentGirl.id] = processedData;
 
-                // 3. 保存处理后的图像到状态
-                const processedImageData = tempCanvas.toDataURL('image/png');
-                const girlId = girls[gameState.currentGirlIndex].id;
-                gameState.girlPortraits[girlId] = processedImageData;
-
-                // 4. 绘制到可见画布
-                portraitCtx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
-                portraitCtx.drawImage(tempCanvas, 0, 0);
-
-                // 5. 显示成功提示
+                // 立即渲染到画布
+                const ctx = portraitCanvas.getContext('2d');
+                ctx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
+                ctx.drawImage(tempCanvas, 0, 0);
                 showUploadSuccess();
-            };
-            img.src = URL.createObjectURL(file);
-            
-            // 清空文件输入，以便可以再次选择同一文件
-            e.target.value = '';
-        }
-
-        // 显示上传成功提示
-        function showUploadSuccess() {
-            const successMsg = document.createElement('div');
-            successMsg.style.cssText = `
-                position: absolute;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(76, 175, 80, 0.9);
-                color: white;
-                padding: 10px 20px;
-                border-radius: 20px;
-                font-weight: bold;
-                z-index: 1000;
-                animation: fadeInOut 2s ease;
-            `;
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeInOut {
-                    0%, 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-                    10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            successMsg.textContent = '✓ 立绘上传成功！';
-            document.querySelector('.girl-portrait').appendChild(successMsg);
-            
-            // 2秒后移除提示
-            setTimeout(() => {
-                successMsg.remove();
-                style.remove();
-            }, 2000);
-        }
+            } catch (err) {
+                alert("立绘处理失败，请换一张图片试试！");
+                console.error(err);
+            }
+        };
+        img.onerror = () => {
+            alert("图片加载失败，请检查图片格式！");
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+}
 
         // 更新对话按钮状态
         function updateDialogueButtons() {
