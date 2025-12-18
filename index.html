@@ -1039,6 +1039,10 @@
         <div class="close-dialogue" id="close-dialogue"><i class="fas fa-times"></i></div>
         <div class="dialogue-container">
             <div class="girl-portrait">
+                <div class="girl-portrait">
+    <!-- 这里是一个 img 标签，用于动态显示女孩的立绘 -->
+    <img id="girl-portrait" src="" alt="Portrait" style="width: 300px; height: 400px;">
+</div>
                 <!-- 抠像画布容器 -->
                 <div class="portrait-canvas-container">
                     <canvas id="portrait-canvas" class="portrait-canvas" width="300" height="400"></canvas>
@@ -1594,26 +1598,27 @@ const girls = [
             });
         }
 
-        // 打开对话
-        function openDialogue(girl) {
-            gameState.currentGirlIndex = girl.id - 1;
-            gameState.dialogueStep = 0;
-            
-            // 更新UI
-            document.getElementById('girl-name').textContent = girl.name;
-            document.getElementById('girl-title').textContent = girl.title;
-            document.getElementById('dialogue-bg').style.backgroundColor = girl.color;
-            document.getElementById('dialogue-text').textContent = girl.dialogues[0];
-            
-            // 加载或绘制立绘
-            loadGirlPortrait(girl);
-            
-            // 更新按钮状态
-            updateDialogueButtons();
-            
-            // 切换屏幕
-            switchScreen('dialogue');
-        }
+     // 打开对话
+function openDialogue(girl) {
+    gameState.currentGirlIndex = girl.id - 1;  // 更新当前女孩索引
+    gameState.dialogueStep = 0;  // 重置对话步骤
+
+    // 更新UI
+    document.getElementById('girl-name').textContent = girl.name;
+    document.getElementById('girl-title').textContent = girl.title;
+    document.getElementById('dialogue-bg').style.backgroundColor = girl.color;
+    document.getElementById('dialogue-text').textContent = girl.dialogues[0];
+
+    // 显示女孩的立绘图片
+    const imgElement = document.getElementById('girl-portrait');  // 获取 img 标签
+    imgElement.src = girl.portrait;  // 更新 src 为女孩的图片路径
+
+    // 更新按钮状态
+    updateDialogueButtons();
+
+    // 切换屏幕
+    switchScreen('dialogue');
+}
 
         function loadGirlPortrait(girl) {
     const girlId = girl.id;
