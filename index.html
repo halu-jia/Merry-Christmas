@@ -1,52 +1,2003 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>Portrait Gallery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      margin: 0;
-      background: #111;
-      color: #fff;
-      font-family: Arial;
-    }
-    h1 {
-      text-align: center;
-      padding-top: 20px;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 图片自适应屏幕大小 */
-      gap: 12px; /* 设置图片间隙 */
-      padding: 12px;
-    }
-    .gallery img {
-      width: 100%; /* 确保图片宽度占满单元格 */
-      height: 200px; /* 固定高度 */
-      object-fit: cover; /* 确保图片适配，填满每个格子 */
-      border-radius: 8px; /* 可选：添加圆角效果 */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星光圣诞游园会</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Inter:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1525;
+            color: #f0e6d2;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            overflow: hidden;
+        }
+
+        /* ========== 加载界面 ========== */
+        #loading-screen {
+            background: linear-gradient(180deg, #0a1525 0%, #1a2b45 100%);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .snow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        .gate-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .gate {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gate:hover {
+            transform: scale(1.02);
+        }
+
+        .gate-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3d2c1a 0%, #2a1c10 100%);
+            border-radius: 20px;
+            box-shadow: 
+                inset 0 0 30px rgba(139, 69, 19, 0.7),
+                0 0 60px rgba(255, 215, 0, 0.4),
+                0 10px 40px rgba(0, 0, 0, 0.7);
+            border: 8px solid #5d4037;
+        }
+
+        .gate-door {
+            position: absolute;
+            width: 46%;
+            height: 85%;
+            top: 7%;
+            background: linear-gradient(135deg, #5d4037 0%, #3e2723 100%);
+            border-radius: 10px;
+            transition: transform 1.5s ease;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.8),
+                0 5px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-door {
+            left: 4%;
+            transform-origin: left center;
+            border-right: 2px solid #8d6e63;
+        }
+
+        .right-door {
+            right: 4%;
+            transform-origin: right center;
+            border-left: 2px solid #8d6e63;
+        }
+
+        .door-knocker {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: radial-gradient(circle at 30% 30%, #d4af37 0%, #b8860b 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 5px rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        .door-knocker:hover {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        .door-knocker-inner {
+            width: 20px;
+            height: 30px;
+            background: #8b4513;
+            border-radius: 50%;
+        }
+
+        .gate-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .holly {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2e7d32;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .holly::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #d32f2f;
+            border-radius: 50%;
+            top: 20%;
+            left: 30%;
+            box-shadow: 
+                25px 10px 0 #d32f2f,
+                50px 0 0 #d32f2f;
+        }
+
+        .lights {
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            top: 15%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: gold;
+            animation: twinkle 1.5s infinite;
+            box-shadow: 0 0 10px gold;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .gate-text {
+            margin-top: 30px;
+            font-family: 'Cedarville Cursive', cursive;
+            font-size: 24px;
+            color: #f0e6d2;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            letter-spacing: 2px;
+            animation: textGlow 3s infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.5); }
+        }
+
+        .loading-progress {
+            position: absolute;
+            bottom: 20%;
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37, #ffd700);
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* ========== 地图界面 ========== */
+        #map-screen {
+            background: radial-gradient(ellipse at center, #1a237e 0%, #0d0f2e 70%, #000 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 90;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .map-background {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(198, 119, 119, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(119, 198, 163, 0.3) 0%, transparent 50%);
+            animation: aurora 20s infinite alternate;
+        }
+
+        @keyframes aurora {
+            0% { filter: hue-rotate(0deg); transform: rotate(0deg); }
+            100% { filter: hue-rotate(20deg); transform: rotate(0.5deg); }
+        }
+
+        .map-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+        }
+
+        .christmas-tree {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 200px;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .tree-trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 40px;
+            background: #8b4513;
+            border-radius: 5px;
+        }
+
+        .tree-body {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 100px solid #2e7d32;
+        }
+
+        .tree-body::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: -50px;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 80px solid #388e3c;
+        }
+
+        .tree-body::after {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: -40px;
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 60px solid #43a047;
+        }
+
+        .tree-star {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: starGlow 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes starGlow {
+            0%, 100% { box-shadow: 0 0 10px gold; }
+            50% { box-shadow: 0 0 25px gold, 0 0 40px gold; }
+        }
+
+        .map-snow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .map-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .shop {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 5px;
+        }
+
+        .shop:hover {
+            transform: translateY(-5px) scale(1.05);
+            z-index: 20;
+        }
+
+        .shop-building {
+            width: 60px;
+            height: 50px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+        }
+
+        .shop-roof {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 20px solid #8b4513;
+            position: absolute;
+            top: -20px;
+            left: 0;
+        }
+
+        .shop-girl {
+            width: 30px;
+            height: 40px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: breathe 3s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        .shop-name {
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: center;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            max-width: 80px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .shop.locked {
+            filter: grayscale(0.8) brightness(0.5);
+            pointer-events: none;
+        }
+
+        .shop.active {
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+        }
+
+        .progress-ring {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            z-index: 100;
+        }
+
+        .ring-circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .ring-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .ring-progress {
+            stroke: #ffd700;
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        /* ========== 对话界面 - 集成抠像立绘 ========== */
+        #dialogue-screen {
+            background: #0a1525;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 80;
+            display: flex;
+        }
+
+        .dialogue-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 左侧：抠像立绘区域 */
+        .girl-portrait {
+            width: 35%;
+            background: rgba(10, 21, 37, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+        }
+
+        .portrait-canvas-container {
+            width: 300px;
+            height: 400px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .portrait-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* 上传按钮样式 */
+        .upload-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            border: none;
+            border-radius: 10px;
+            color: #0a1525;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .upload-btn i {
+            font-size: 16px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .girl-name {
+            margin-top: 30px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .girl-title {
+            font-size: 18px;
+            color: #b0bec5;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* 右侧：对话区域 */
+        .dialogue-area {
+            width: 65%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .dialogue-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.3;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            filter: blur(5px);
+        }
+
+        .dialogue-text {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            min-height: 300px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            font-size: 20px;
+            line-height: 1.6;
+            overflow-y: auto;
+            font-family: 'Cedarville Cursive', cursive;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dialogue-text:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .dialogue-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .control-button {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .close-dialogue {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .close-dialogue:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .dialogue-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* 默认占位符样式 */
+        .portrait-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .portrait-placeholder i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* ========== 圣诞树界面 ========== */
+        #tree-screen {
+            background: radial-gradient(ellipse at center, #0a1f1f 0%, #050a14 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 70;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tree-container {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .big-tree {
+            width: 500px;
+            height: 700px;
+            position: relative;
+        }
+
+        .big-tree-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-bottom: 400px solid #1b5e20;
+            z-index: 5;
+        }
+
+        .big-tree-body::before {
+            content: '';
+            position: absolute;
+            top: 100px;
+            left: -150px;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 300px solid #2e7d32;
+        }
+
+        .big-tree-body::after {
+            content: '';
+            position: absolute;
+            top: 200px;
+            left: -100px;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 200px solid #388e3c;
+        }
+
+        .big-tree-trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 100px;
+            background: #5d4037;
+            border-radius: 10px;
+            z-index: 4;
+        }
+
+        .big-tree-star {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: starGlow 2s infinite;
+            z-index: 10;
+        }
+
+        .ornament {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 6;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .ornament:hover {
+            transform: scale(1.2);
+        }
+
+        .wish-section {
+            position: absolute;
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .wish-title {
+            font-size: 28px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .wish-paper {
+            background: url('https://www.transparenttextures.com/patterns/parchment.png');
+            background-color: #f5e9d4;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 200px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .wish-textarea {
+            width: 100%;
+            height: 180px;
+            background: transparent;
+            border: none;
+            resize: none;
+            font-family: 'Cedarville Cursive', cursive;
+            font-size: 18px;
+            color: #5d4037;
+            line-height: 1.5;
+        }
+
+        .wish-textarea:focus {
+            outline: none;
+        }
+
+        .wish-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option.selected {
+            border-color: white;
+            transform: scale(1.2);
+        }
+
+        .wish-button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            border: none;
+            border-radius: 10px;
+            color: #0a1525;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wish-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .return-to-map {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .return-to-map:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 1200px) {
+            .gate { width: 350px; height: 450px; }
+            .girl-portrait { width: 40%; }
+            .dialogue-area { width: 60%; }
+            .portrait-canvas-container { width: 250px; height: 350px; }
+        }
+
+        @media (max-width: 768px) {
+            .gate { width: 300px; height: 400px; }
+            .dialogue-container { flex-direction: column; }
+            .girl-portrait { width: 100%; height: 45%; padding: 20px; }
+            .dialogue-area { width: 100%; height: 55%; padding: 20px; }
+            .portrait-canvas-container { width: 200px; height: 280px; }
+            .tree-container { flex-direction: column; }
+            .wish-section { position: relative; right: 0; top: 0; transform: none; width: 100%; margin-top: 30px; }
+        }
+    </style>
 </head>
 <body>
+    <!-- 加载界面 -->
+    <div id="loading-screen" class="screen">
+        <div class="snow-container" id="snowfall"></div>
+        <div class="gate-container">
+            <div class="gate" id="gate">
+                <div class="gate-frame"></div>
+                <div class="left-door gate-door"></div>
+                <div class="right-door gate-door"></div>
+                <div class="door-knocker" id="door-knocker">
+                    <div class="door-knocker-inner"></div>
+                </div>
+                <div class="gate-decoration">
+                    <div class="holly"></div>
+                    <div class="lights">
+                        <div class="light" style="animation-delay: 0s;"></div>
+                        <div class="light" style="animation-delay: 0.2s;"></div>
+                        <div class="light" style="animation-delay: 0.4s;"></div>
+                        <div class="light" style="animation-delay: 0.6s;"></div>
+                        <div class="light" style="animation-delay: 0.8s;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="gate-text">轻叩门环，开启奇境</div>
+            <div class="loading-progress">
+                <div class="loading-bar" id="loading-bar"></div>
+            </div>
+        </div>
+    </div>
 
-<h1>角色画廊</h1>
+    <!-- 地图界面 -->
+    <div id="map-screen" class="screen">
+        <div class="map-container">
+            <div class="map-background"></div>
+            <div class="map-snow" id="map-snow"></div>
+            <div class="map-content" id="map-content">
+                <div class="christmas-tree" id="final-tree">
+                    <div class="tree-trunk"></div>
+                    <div class="tree-body"></div>
+                    <div class="tree-star"></div>
+                </div>
+                <!-- 店铺将通过JS动态生成 -->
+            </div>
+            <div class="progress-ring">
+                <svg viewBox="0 0 80 80">
+                    <circle class="ring-circle ring-bg" cx="40" cy="40" r="36"></circle>
+                    <circle class="ring-circle ring-progress" id="progress-circle" cx="40" cy="40" r="36"></circle>
+                </svg>
+                <div class="ring-text"><span id="progress-text">0</span>/12</div>
+            </div>
+            <div class="map-controls">
+                <div class="control-btn" id="zoom-in"><i class="fas fa-search-plus"></i></div>
+                <div class="control-btn" id="zoom-out"><i class="fas fa-search-minus"></i></div>
+                <div class="control-btn" id="reset-view"><i class="fas fa-crosshairs"></i></div>
+            </div>
+        </div>
+    </div>
 
-<div class="gallery">
-  <img src="assets/portraits/id01.jpg" alt="id01">
-  <img src="assets/portraits/id02.jpg" alt="id02">
-  <img src="assets/portraits/id03.jpg" alt="id03">
-  <img src="assets/portraits/id04.jpg" alt="id04">
-  <img src="assets/portraits/id05.jpg" alt="id05">
-  <img src="assets/portraits/id06.jpg" alt="id06">
-  <img src="assets/portraits/id07.jpg" alt="id07">
-  <img src="assets/portraits/id08.jpg" alt="id08">
-  <img src="assets/portraits/id09.jpg" alt="id09">
-  <img src="assets/portraits/id10.jpg" alt="id10">
-  <img src="assets/portraits/id11.jpg" alt="id11">
-  <img src="assets/portraits/id12.jpg" alt="id12">
-</div>
+    <!-- 对话界面 -->
+    <div id="dialogue-screen" class="screen">
+        <div class="close-dialogue" id="close-dialogue"><i class="fas fa-times"></i></div>
+        <div class="dialogue-container">
+            <div class="girl-portrait">
+                <!-- 抠像画布容器 -->
+                <div class="portrait-canvas-container">
+                    <canvas id="portrait-canvas" class="portrait-canvas" width="300" height="400"></canvas>
+                </div>
+                
+                <div class="girl-name" id="girl-name">Koko</div>
+                <div class="girl-title" id="girl-title">心跳共鸣电台</div>
+                
+                <!-- 上传按钮 -->
+                <input type="file" id="file-input" accept="image/*">
+                <button class="upload-btn" onclick="document.getElementById('file-input').click()">
+                    <i class="fas fa-upload"></i>上传立绘（自动抠像）
+                </button>
+                
+                <div class="dialogue-indicator">点击对话继续</div>
+            </div>
+            <div class="dialogue-area">
+                <div class="dialogue-background" id="dialogue-bg"></div>
+                <div class="dialogue-text" id="dialogue-text">
+                    欢迎来到我的世界！我是Koko，一个用rap表达真实自我的女孩。今天，想听听铁刘海背后的故事吗？
+                </div>
+                <div class="dialogue-controls">
+                    <button class="control-button" id="prev-dialogue">上一句</button>
+                    <button class="control-button" id="next-dialogue">下一句</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- 圣诞树界面 -->
+    <div id="tree-screen" class="screen">
+        <button class="return-to-map" id="return-to-map">返回地图</button>
+        <div class="tree-container">
+            <div class="big-tree" id="big-tree">
+                <div class="big-tree-trunk"></div>
+                <div class="big-tree-body"></div>
+                <div class="big-tree-star"></div>
+                <!-- 装饰品将通过JS动态生成 -->
+            </div>
+            <div class="wish-section">
+                <h2 class="wish-title">许下圣诞心愿</h2>
+                <div class="wish-paper">
+                    <textarea class="wish-textarea" id="wish-textarea" placeholder="写下你的圣诞心愿... (最多140字)" maxlength="140"></textarea>
+                </div>
+                <div class="wish-controls">
+                    <div class="color-picker">
+                        <div class="color-option selected" style="background-color: #ff6b6b;" data-color="#ff6b6b"></div>
+                        <div class="color-option" style="background-color: #4ecdc4;" data-color="#4ecdc4"></div>
+                        <div class="color-option" style="background-color: #ffd166;" data-color="#ffd166"></div>
+                        <div class="color-option" style="background-color: #06d6a0;" data-color="#06d6a0"></div>
+                        <div class="color-option" style="background-color: #118ab2;" data-color="#118ab2"></div>
+                    </div>
+                    <button class="wish-button" id="hang-wish">挂上心愿</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音频元素 -->
+    <audio id="bg-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-christmas-is-coming-1194.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="door-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-door-hinge-1181.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bell-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+
+// 女孩数据 - 线性对话版本
+const girls = [
+    {
+        id: 1,
+        name: "Koko",
+        portrait: "assets/portraits/id01.jpg",
+        title: "心跳共鸣电台",
+        color: "#ff6b6b",
+        position: {x: 15, y: 30},
+        buildingColor: "#d32f2f",
+        dialogues: [
+            "Yo！终于来了个能聊的人！很多人只看到我的rap和外貌...",
+            "但铁刘海不只是造型，它代表我的坚持。就像rap，表面酷炫，内核真实。",
+            "每句歌词都是我的真实感受。写rap就像把心跳变成节奏，把情绪变成韵脚。",
+            "保持这个形象会不会累？说实话，有时候会...",
+            "但当粉丝告诉我，我的音乐给了他们勇气，一切都值得了。",
+            "Yo！圣诞老人驾着雪橇来，礼物装满一麻袋，铁刘海女孩有话说：做真实的自己最自在！",
+            "这就是我的圣诞rap祝福！保持真实，保持节奏，圣诞快乐！"
+        ],
+        icon: "🎤"
+    },
+    {
+        id: 2,
+        name: "文夏奈尔",
+        portrait: "assets/portraits/id02.jpg",
+        title: "全明星客厅",
+        color: "#4ecdc4",
+        position: {x: 30, y: 15},
+        buildingColor: "#00796b",
+        dialogues: [
+            "欢迎！别被这一屋子收藏吓到～泰迪熊、吉他、棒球...每样都是我的不同面。",
+            "很多人问我怎么平衡这么多爱好...其实它们都是我的一部分，不需要平衡。",
+            "比如道奇队的比赛，2017年世界大赛那一刻，全队一心的感觉让我永生难忘。",
+            "那种感觉，就像现在和队友们一起奋斗的每一天。",
+            "弹吉他时是另一种状态，足球是释放，吉他是沉淀。一个动，一个静。",
+            "至于这些黑胶唱片...数字音乐方便，但黑胶有温度，就像泰迪熊一样。",
+            "蜘蛛侠？他告诉我，能力越大责任越大。这也是我想对未来的自己说的话。",
+            "圣诞快乐！愿你的生活也像我的收藏一样丰富多彩！"
+        ],
+        icon: "⚾"
+    },
+    {
+        id: 3,
+        name: "Woni",
+        portrait: "assets/portraits/id03.jpg",
+        title: "樱花茶室静心处",
+        color: "#ffd166",
+        position: {x: 70, y: 25},
+        buildingColor: "#ff8f00",
+        dialogues: [
+            "请坐...茶已经准备好了。元酱是我的昵称，因为我有时候像鸵鸟一样胆小...",
+            "但今天，我想试着多说一些。星星（我的狗狗）教会我，面对才是最好的方式。",
+            "和星星在一起时，就像樱花飘落一样安宁。它不会评判我，只是安静地陪伴...",
+            "这是我珍视的温柔，也是我在这喧嚣行业中的避风港。",
+            "说到偶像...坂口的坚持，梅西的谦逊。不只是球技，更是人格魅力。",
+            "我想成为那样的人——在球场上闪耀，在生活中保持谦卑。",
+            "樱花即使在冬天也会期待春天的绽放...就像我们，即使胆小也要勇敢向前。",
+            "圣诞快乐...愿你的心中也有一片宁静的樱花林。"
+        ],
+        icon: "🌸"
+    },
+    {
+        id: 4,
+        name: "SOOIN",
+        portrait: "assets/portraits/id04.jpg",
+        title: "半梦烘焙坊",
+        color: "#06d6a0",
+        position: {x: 85, y: 50},
+        buildingColor: "#1b5e20",
+        dialogues: [
+            "嗯...你来了。Yomi刚刚叫醒我...抱歉，我总是很困。",
+            "但在梦里，我能烤出最美味的饼干...要听听我的梦吗？",
+            "我梦到过会游泳的饼干...可惜我本人不会游泳。所以叫Swimkim。",
+            "Yomi在梦里总是偷吃刚烤好的面包，就像现实中一样。",
+            "它是我的闹钟、品尝师，也是最好的倾听者...虽然它只会摇尾巴。",
+            "有时候我觉得，睡眠不是逃避，而是另一种形式的创造。",
+            "如果有一天不困了，我最想...开一家真正的烘焙店，让Yomi当店长。",
+            "然后学游泳，成为真正的Swimkim，而不只是个梦。",
+            "圣诞快乐...愿你的梦境也充满甜蜜的创意。"
+        ],
+        icon: "🍪"
+    },
+    {
+        id: 5,
+        name: "李沅禧",
+        portrait: "assets/portraits/id05.jpg",
+        title: "运动美妆平衡室",
+        color: "#118ab2",
+        position: {x: 60, y: 75},
+        buildingColor: "#1565c0",
+        dialogues: [
+            "体育部长和美妆控不冲突吧？就像...薄巧不该存在，但其他口味都可以和谐相处！",
+            "作为体育部长，我总对女孩们说：运动不是为了取悦别人，而是为了取悦自己。",
+            "就像美妆，是自我表达，不是迎合标准。",
+            "美妆对我来说，既是装饰让我开心，也是盔甲让我勇敢。",
+            "体育场上的汗水和镜子前的口红，都是我的一部分，不需要二选一。",
+            "现在详细说说薄巧为什么该被禁止？薄荷和巧克力就像油和水！",
+            "它们应该各自美丽，而不是强行融合。这是我的美食哲学，也是人生哲学！",
+            "要做就做完整的自己，不需要为了迎合而混合。",
+            "圣诞快乐！愿你也有勇气做最真实的自己！"
+        ],
+        icon: "💄"
+    },
+    {
+        id: 6,
+        name: "李荣书",
+        portrait: "assets/portraits/id06.jpg",
+        title: "液态芝士咖啡馆",
+        color: "#9d4edd",
+        position: {x: 25, y: 70},
+        buildingColor: "#7b1fa2",
+        dialogues: [
+            "喵～看，这块芝士在慢慢变形...就像我的人生观。强硬容易断裂，柔软才能适应一切。",
+            "想尝尝黄芝士配樱桃吗？这是我最爱的组合——浓郁与清新的碰撞。",
+            "在工作中保持'柔软'？像液体猫一样，保持核心但适应环境。",
+            "原则是骨架，灵活是肌肉，缺一不可。",
+            "幸运数字7对我的意义？7是完美数字。一周7天，彩虹7色...",
+            "它提醒我，完整来自多样性，就像我的多重身份。",
+            "芝士的包容，辣椒的热情，樱桃的甜美...生活就像美食，需要平衡各种滋味。",
+            "粉色是我的生活，黑色是我的工作。两者都是真实的我。",
+            "圣诞快乐！愿你的生活也像芝士一样，柔软而富有弹性。"
+        ],
+        icon: "🧀"
+    },
+    {
+        id: 7,
+        name: "IROHA",
+        portrait: "assets/portraits/id07.jpg",
+        title: "薄巧派舞蹈室",
+        color: "#ff9e6d",
+        position: {x: 40, y: 60},
+        buildingColor: "#e65100",
+        dialogues: [
+            "杰尼龟、猫咪、鬼魂...都是我！就像薄巧，有人恨有人爱。但舞蹈让一切矛盾变得和谐～",
+            "很多人问我在不同'塑'之间切换会不会累...",
+            "不会，因为每个'我'都是真实的。就像舞蹈，不同风格但同一身体。",
+            "提拉米苏和舞蹈有什么共通点？层次感！",
+            "提拉米苏有咖啡、奶酪、可可...舞蹈有节奏、情感、故事。都是多层次的享受。",
+            "至于那个著名的鲤鱼打挺...首先要有跌倒的勇气，然后瞬间发力！",
+            "生活也是这样：不怕摔倒，才能华丽起身。",
+            "薄巧派？是的，我坚持！就像坚持做多面的自己。",
+            "圣诞快乐！愿你的生活也像舞蹈一样，充满节奏与和谐。"
+        ],
+        icon: "💃"
+    },
+    {
+        id: 8,
+        name: "徐俊辉",
+        portrait: "assets/portraits/id08.jpg",
+        title: "黑白键沉思画廊",
+        color: "#90be6d",
+        position: {x: 75, y: 85},
+        buildingColor: "#33691e",
+        dialogues: [
+            "欢迎来到我的矛盾空间。钢琴是精确的，绘画是自由的；草莓是甜的，榴莲是...不存在的。",
+            "那些'奇怪照片'，我想捕捉的不是奇怪，而是独特的角度。",
+            "就像草莓，大多数人看到红色，我寻找阴影里的青色。",
+            "钢琴的严谨如何影响我的自由创作？纪律带来真正的自由。",
+            "就像进击的巨人，没有城墙的保护，就没有探索世界的勇气。",
+            "东京香蕉面包和进击的巨人有什么关联？都是混合体！",
+            "香蕉的甜 and 面包的实，人类的脆弱和巨人的力量。矛盾中的和谐最迷人。",
+            "钢琴、绘画、摄影...都是我与世界对话的不同语言。",
+            "圣诞快乐！愿你也找到属于自己的表达方式。"
+        ],
+        icon: "🎨"
+    },
+    {
+        id: 9,
+        name: "林枫子FUKO",
+        portrait: "assets/portraits/id09.jpg",
+        title: "多语言广播站",
+        color: "#f9c74f",
+        position: {x: 50, y: 20},
+        buildingColor: "#ff9800",
+        dialogues: [
+            "마이크 테스트~（麦克风测试）！TOPIK 6级、绕口令、主持、KPOP...我的世界由声音构成。",
+            "学韩语最难的是什么？敬语系统！但就像绕口令，练习多了就顺了。",
+            "语言是桥梁，连接不同世界的我。",
+            "模仿主持人和真正主持有什么不同？模仿是复制，主持是创造。",
+            "就像妈妈做的塔可饭，别人能做，但只有她的有'家'的味道。",
+            "每次练习到深夜，妈妈都会做塔可饭等我。",
+            "那是疲惫时最温暖的充电站，也是我想念的家乡味。",
+            "帕恰狗？它代表纯粹的快乐，就像我站在舞台上时的心情。",
+            "圣诞快乐！愿你的世界也充满美妙的声音和温暖的回忆。"
+        ],
+        icon: "🎤"
+    },
+    {
+        id: 10,
+        name: "金拏炅Naky",
+        portrait: "assets/portraits/id10.jpg",
+        title: "Melody秘密基地",
+        color: "#f8961e",
+        position: {x: 20, y: 45},
+        buildingColor: "#e65100",
+        dialogues: [
+            "（压低声音）这里是我的绝对领域...（突然抱着Melody玩偶）啊！这只刚到！",
+            "咳咳...重新开始。欢迎来到我的矛盾世界。",
+            "作为舞蹈队长，最难的是平衡严厉和温柔。台上要完美，台下要理解。",
+            "就像Melody，外表可爱，内心强大。",
+            "为什么这么喜欢Melody？它不会说话，但懂得所有情绪。",
+            "当我从酷帅的队长变回普通女孩时，它是我最好的听众。",
+            "'BIBI妹'这个昵称是粉丝起的！因为台上'bibi'（强势），台下'妹妹'（可爱）。",
+            "很贴切，我全盘接受！这就是真实的我。",
+            "芒果？最爱！就像生活，外表坚硬，内在甜美多汁。",
+            "圣诞快乐！愿你的生活也像Melody一样，充满温柔与惊喜。"
+        ],
+        icon: "🎭"
+    },
+    {
+        id: 11,
+        name: "李知禹Jiwoo",
+        portrait: "assets/portraits/id11.jpg",
+        title: "冰茶小熊剧院",
+        color: "#43aa8b",
+        position: {x: 65, y: 65},
+        buildingColor: "#00695c",
+        dialogues: [
+            "很多人说我'长得萌却要耍酷'...但为什么要二选一呢？就像冰茶，既清醒又甜美。",
+            "高个子女生会面对什么特别困扰？总被期待要'强势'，但我想说：高个子也可以软萌！",
+            "就像Maru（我的小狗），大只但温柔。",
+            "为什么这么依赖冰茶？冰茶让我保持清醒的甜蜜。",
+            "烘焙时提神，看音乐剧时不打瞌睡，打游戏时保持专注...它是我的多功能燃料。",
+            "烘焙和打冰球，一柔一刚，你怎么平衡？烘焙是创造，冰球是释放。",
+            "一个温暖厨房，一个冰冷赛场。两者都是我与世界对话的方式。",
+            "白色是我最喜欢的颜色，纯净如雪，包容一切。",
+            "圣诞快乐！愿你也能像冰茶一样，找到生活中的清醒与甜蜜。"
+        ],
+        icon: "☕"
+    },
+    {
+        id: 12,
+        name: "崔志宇",
+        portrait: "assets/portraits/id12.jpg",
+        title: "白鼬石头疗愈馆",
+        color: "#a78bfa",
+        position: {x: 45, y: 85},
+        buildingColor: "#7c3aed",
+        dialogues: [
+            "欢迎来到我的疗愈空间～比起成为动物，我更想成为一块安静的石头。你知道白鼬塑吗？",
+            "我的日常很简单：半身浴、草莓桃子、碳酸饮料，还有《机智的医生生活》。",
+            "绿茶草莓香草巧克力冰淇淋是我的最爱，酸奶冰淇淋要加草莓+格兰诺拉麦片+奶酪块+Lotus饼干碎！",
+            "讨厌虫子，喜欢花香皂香的香水。私服里黑色最多，因为像石头的沉稳。",
+            "你知道520是我爱你的意思吗？就像《我的明天，你的昨天》里那种跨越时间的感情。",
+            "用ChatGPT测前世，说我上辈子是把生命寄托在纪律和信念上的人——教师或神职人员。",
+            "近视但不戴眼镜，左眼视力更低，左眼也更小。脆桃水蜜桃里更喜欢水蜜桃的柔软。",
+            "听歌会一直听到腻，Utada的歌和原味Pocky是我的comfort zone。",
+            "圣诞快乐～愿你能找到像石头一样安稳，又像白鼬一样灵动的平衡。"
+        ],
+        icon: "🪨"
+    }
+];
+
+        // 游戏状态
+        const gameState = {
+            currentScreen: 'loading',
+            completedGirls: [],
+            progress: 0,
+            currentGirlIndex: 0,
+            dialogueStep: 0,
+            wishColor: '#ff6b6b',
+            // 存储每个女孩的立绘数据（base64格式）
+            girlPortraits: {}
+        };
+
+        // DOM元素
+        const screens = {
+            loading: document.getElementById('loading-screen'),
+            map: document.getElementById('map-screen'),
+            dialogue: document.getElementById('dialogue-screen'),
+            tree: document.getElementById('tree-screen')
+        };
+
+        // 音频元素
+        const bgMusic = document.getElementById('bg-music');
+        const doorSound = document.getElementById('door-sound');
+        const bellSound = document.getElementById('bell-sound');
+
+        // 抠像画布相关
+        const portraitCanvas = document.getElementById('portrait-canvas');
+        const portraitCtx = portraitCanvas.getContext('2d');
+        const fileInput = document.getElementById('file-input');
+
+        // 初始化
+        function init() {
+            createSnowfall();
+            setupEventListeners();
+            simulateLoading();
+        }
+
+        // 创建雪花效果
+        function createSnowfall() {
+            const snowContainer = document.getElementById('snowfall');
+            const mapSnowContainer = document.getElementById('map-snow');
+            
+            for(let i = 0; i < 100; i++) {
+                createSnowflake(snowContainer);
+            }
+            
+            for(let i = 0; i < 50; i++) {
+                createSnowflake(mapSnowContainer);
+            }
+        }
+
+        function createSnowflake(container) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            
+            const size = Math.random() * 5 + 2;
+            const startX = Math.random() * 100;
+            const duration = Math.random() * 10 + 10;
+            const delay = Math.random() * 10;
+            
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${startX}vw`;
+            snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+            snowflake.style.animationDuration = `${duration}s`;
+            snowflake.style.animationDelay = `${delay}s`;
+            
+            container.appendChild(snowflake);
+        }
+
+        // 模拟加载过程
+        function simulateLoading() {
+            const loadingBar = document.getElementById('loading-bar');
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 10 + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    loadingBar.style.width = '100%';
+                    setTimeout(() => {
+                        playWelcomeAudio();
+                    }, 500);
+                } else {
+                    loadingBar.style.width = `${progress}%`;
+                }
+            }, 200);
+        }
+
+        // 播放欢迎音频
+        function playWelcomeAudio() {
+            bellSound.play();
+            
+            // 显示点击提示
+            const gateText = document.querySelector('.gate-text');
+            gateText.textContent = "点击门环进入游园会";
+            gateText.style.animation = "textGlow 1.5s infinite";
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 门环点击
+            document.getElementById('door-knocker').addEventListener('click', openGate);
+            
+            // 地图控制
+            document.getElementById('zoom-in').addEventListener('click', () => zoomMap(1.2));
+            document.getElementById('zoom-out').addEventListener('click', () => zoomMap(0.8));
+            document.getElementById('reset-view').addEventListener('click', resetMapView);
+            
+            // 对话控制
+            document.getElementById('close-dialogue').addEventListener('click', closeDialogue);
+            document.getElementById('prev-dialogue').addEventListener('click', prevDialogue);
+            document.getElementById('next-dialogue').addEventListener('click', nextDialogue);
+            
+            // 对话文本点击
+            document.getElementById('dialogue-text').addEventListener('click', nextDialogue);
+            
+            // 文件上传
+            fileInput.addEventListener('change', handleImageUpload);
+            
+            // 心愿控制
+            document.getElementById('hang-wish').addEventListener('click', hangWish);
+            document.getElementById('return-to-map').addEventListener('click', returnToMap);
+            
+            // 颜色选择
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.wishColor = this.getAttribute('data-color');
+                });
+            });
+            
+            // 圣诞树点击
+            document.getElementById('final-tree').addEventListener('click', () => {
+                if (gameState.completedGirls.length === girls.length) {
+                    switchScreen('tree');
+                }
+            });
+        }
+
+        // 打开大门
+        function openGate() {
+            const leftDoor = document.querySelector('.left-door');
+            const rightDoor = document.querySelector('.right-door');
+            const gate = document.getElementById('gate');
+            
+            // 播放音效
+            doorSound.play();
+            bgMusic.volume = 0.3;
+            bgMusic.play();
+            
+            // 动画效果
+            leftDoor.style.transform = 'perspective(1000px) rotateY(-100deg)';
+            rightDoor.style.transform = 'perspective(1000px) rotateY(100deg)';
+            gate.style.cursor = 'default';
+            
+            // 过渡到地图界面
+            setTimeout(() => {
+                switchScreen('map');
+                createShops();
+            }, 1500);
+        }
+
+        // 切换屏幕
+        function switchScreen(screenName) {
+            // 隐藏所有屏幕
+            Object.values(screens).forEach(screen => {
+                screen.style.opacity = '0';
+                screen.style.pointerEvents = 'none';
+            });
+            
+            // 显示目标屏幕
+            screens[screenName].style.opacity = '1';
+            screens[screenName].style.pointerEvents = 'auto';
+            gameState.currentScreen = screenName;
+            
+            // 特殊处理
+            if (screenName === 'map') {
+                updateProgress();
+            } else if (screenName === 'tree') {
+                createOrnaments();
+            }
+        }
+
+        // 创建店铺
+        function createShops() {
+            const mapContent = document.getElementById('map-content');
+            
+            // 清空现有店铺
+            const existingShops = document.querySelectorAll('.shop');
+            existingShops.forEach(shop => shop.remove());
+            
+            // 创建新店铺
+            girls.forEach(girl => {
+                const shop = document.createElement('div');
+                shop.className = `shop ${gameState.completedGirls.includes(girl.id) ? 'completed' : 'active'}`;
+                shop.id = `shop-${girl.id}`;
+                shop.style.left = `${girl.position.x}%`;
+                shop.style.top = `${girl.position.y}%`;
+                shop.style.backgroundColor = girl.buildingColor;
+                
+                shop.innerHTML = `
+                    <div class="shop-building">
+                        <div class="shop-roof"></div>
+                        <div class="shop-girl" style="background-color: ${girl.color}; border-radius: 50% 50% 0 0;"></div>
+                    </div>
+                    <div class="shop-name">${girl.name}</div>
+                `;
+                
+                // 添加点击事件
+                shop.addEventListener('click', () => openDialogue(girl));
+                
+                // 添加悬停事件
+                shop.addEventListener('mouseenter', () => {
+                    if (!gameState.completedGirls.includes(girl.id)) {
+                        shop.style.boxShadow = `0 0 20px ${girl.color}`;
+                    }
+                });
+                
+                shop.addEventListener('mouseleave', () => {
+                    if (!gameState.completedGirls.includes(girl.id)) {
+                        shop.style.boxShadow = 'none';
+                    }
+                });
+                
+                mapContent.appendChild(shop);
+            });
+        }
+
+        // 打开对话
+        function openDialogue(girl) {
+            gameState.currentGirlIndex = girl.id - 1;
+            gameState.dialogueStep = 0;
+            
+            // 更新UI
+            document.getElementById('girl-name').textContent = girl.name;
+            document.getElementById('girl-title').textContent = girl.title;
+            document.getElementById('dialogue-bg').style.backgroundColor = girl.color;
+            document.getElementById('dialogue-text').textContent = girl.dialogues[0];
+            
+            // 加载或绘制立绘
+            loadGirlPortrait(girl);
+            
+            // 更新按钮状态
+            updateDialogueButtons();
+            
+            // 切换屏幕
+            switchScreen('dialogue');
+        }
+
+        // 加载女孩立绘
+        function loadGirlPortrait(girl) {
+            const girlId = girl.id;
+            
+            // 清空画布
+            portraitCtx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
+            
+            if (gameState.girlPortraits[girlId]) {
+                // 如果有已保存的立绘，加载它
+                const img = new Image();
+                img.onload = () => {
+                    // 保持比例填充画布
+                    const scale = Math.max(
+                        portraitCanvas.width / img.width,
+                        portraitCanvas.height / img.height
+                    );
+                    const dw = img.width * scale;
+                    const dh = img.height * scale;
+                    const dx = (portraitCanvas.width - dw) / 2;
+                    const dy = (portraitCanvas.height - dh) / 2;
+                    
+                    portraitCtx.drawImage(img, dx, dy, dw, dh);
+                };
+                img.src = gameState.girlPortraits[girlId];
+            } else {
+                // 否则绘制默认占位符
+                drawPlaceholderPortrait(girl);
+            }
+        }
+
+        // 绘制默认占位符立绘
+        function drawPlaceholderPortrait(girl) {
+            // 创建渐变背景
+            const gradient = portraitCtx.createLinearGradient(0, 0, portraitCanvas.width, portraitCanvas.height);
+            gradient.addColorStop(0, girl.color + "40"); // 40 = 25%透明度
+            gradient.addColorStop(1, girl.color + "80"); // 80 = 50%透明度
+            
+            portraitCtx.fillStyle = gradient;
+            portraitCtx.fillRect(0, 0, portraitCanvas.width, portraitCanvas.height);
+            
+            // 绘制图标
+            portraitCtx.fillStyle = "#fff";
+            portraitCtx.font = 'bold 80px sans-serif';
+            portraitCtx.textAlign = 'center';
+            portraitCtx.textBaseline = 'middle';
+            portraitCtx.fillText(girl.icon, portraitCanvas.width / 2, portraitCanvas.height / 2);
+            
+            // 添加提示文字
+            portraitCtx.font = '16px Inter, sans-serif';
+            portraitCtx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            portraitCtx.fillText('点击"上传立绘"替换', portraitCanvas.width / 2, portraitCanvas.height - 40);
+        }
+
+        // 处理图片上传
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const img = new Image();
+            img.onload = () => {
+                // 1. 创建临时画布用于抠像处理
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = portraitCanvas.width;
+                tempCanvas.height = portraitCanvas.height;
+
+                // 保持比例填充
+                const scale = Math.max(
+                    portraitCanvas.width / img.width,
+                    portraitCanvas.height / img.height
+                );
+                const dw = img.width * scale;
+                const dh = img.height * scale;
+                const dx = (portraitCanvas.width - dw) / 2;
+                const dy = (portraitCanvas.height - dh) / 2;
+                tempCtx.drawImage(img, dx, dy, dw, dh);
+
+                // 2. 简单抠像算法（移除纯色背景）
+                const imageData = tempCtx.getImageData(0, 0, portraitCanvas.width, portraitCanvas.height);
+                const data = imageData.data;
+
+                // 取四个角的像素作为背景色参考
+                const corners = [
+                    [0, 0], // 左上
+                    [portraitCanvas.width - 1, 0], // 右上
+                    [0, portraitCanvas.height - 1], // 左下
+                    [portraitCanvas.width - 1, portraitCanvas.height - 1] // 右下
+                ];
+
+                // 计算平均背景色
+                let totalR = 0, totalG = 0, totalB = 0;
+                corners.forEach(([x, y]) => {
+                    const index = (y * portraitCanvas.width + x) * 4;
+                    totalR += data[index];
+                    totalG += data[index + 1];
+                    totalB += data[index + 2];
+                });
+
+                const bgR = Math.round(totalR / corners.length);
+                const bgG = Math.round(totalG / corners.length);
+                const bgB = Math.round(totalB / corners.length);
+                const tolerance = 40; // 色差阈值
+
+                // 遍历所有像素，将接近背景色的像素设为透明
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+
+                    // 计算与背景色的差异
+                    const diff = Math.abs(r - bgR) + Math.abs(g - bgG) + Math.abs(b - bgB);
+                    
+                    // 如果差异小于阈值，设为透明
+                    if (diff < tolerance) {
+                        data[i + 3] = 0; // 设置alpha为0（透明）
+                    }
+                }
+
+                tempCtx.putImageData(imageData, 0, 0);
+
+                // 3. 保存处理后的图像到状态
+                const processedImageData = tempCanvas.toDataURL('image/png');
+                const girlId = girls[gameState.currentGirlIndex].id;
+                gameState.girlPortraits[girlId] = processedImageData;
+
+                // 4. 绘制到可见画布
+                portraitCtx.clearRect(0, 0, portraitCanvas.width, portraitCanvas.height);
+                portraitCtx.drawImage(tempCanvas, 0, 0);
+
+                // 5. 显示成功提示
+                showUploadSuccess();
+            };
+            img.src = URL.createObjectURL(file);
+            
+            // 清空文件输入，以便可以再次选择同一文件
+            e.target.value = '';
+        }
+
+        // 显示上传成功提示
+        function showUploadSuccess() {
+            const successMsg = document.createElement('div');
+            successMsg.style.cssText = `
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(76, 175, 80, 0.9);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 20px;
+                font-weight: bold;
+                z-index: 1000;
+                animation: fadeInOut 2s ease;
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInOut {
+                    0%, 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                    10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            successMsg.textContent = '✓ 立绘上传成功！';
+            document.querySelector('.girl-portrait').appendChild(successMsg);
+            
+            // 2秒后移除提示
+            setTimeout(() => {
+                successMsg.remove();
+                style.remove();
+            }, 2000);
+        }
+
+        // 更新对话按钮状态
+        function updateDialogueButtons() {
+            const girl = girls[gameState.currentGirlIndex];
+            const prevBtn = document.getElementById('prev-dialogue');
+            const nextBtn = document.getElementById('next-dialogue');
+            
+            // 上一句按钮
+            if (gameState.dialogueStep === 0) {
+                prevBtn.style.opacity = '0.5';
+                prevBtn.style.pointerEvents = 'none';
+            } else {
+                prevBtn.style.opacity = '1';
+                prevBtn.style.pointerEvents = 'auto';
+            }
+            
+            // 下一句按钮
+            if (gameState.dialogueStep === girl.dialogues.length - 1) {
+                nextBtn.textContent = '完成对话';
+            } else {
+                nextBtn.textContent = '下一句';
+            }
+        }
+
+        // 关闭对话
+        function closeDialogue() {
+            switchScreen('map');
+        }
+
+        // 上一个对话
+        function prevDialogue() {
+            if (gameState.dialogueStep > 0) {
+                gameState.dialogueStep--;
+                const girl = girls[gameState.currentGirlIndex];
+                document.getElementById('dialogue-text').textContent = girl.dialogues[gameState.dialogueStep];
+                updateDialogueButtons();
+            }
+        }
+
+        // 下一个对话
+        function nextDialogue() {
+            const girl = girls[gameState.currentGirlIndex];
+            
+            if (gameState.dialogueStep < girl.dialogues.length - 1) {
+                // 还有更多对话
+                gameState.dialogueStep++;
+                document.getElementById('dialogue-text').textContent = girl.dialogues[gameState.dialogueStep];
+                updateDialogueButtons();
+            } else {
+                // 对话结束
+                completeDialogue();
+            }
+        }
+
+        // 完成对话
+        function completeDialogue() {
+            const girlId = gameState.currentGirlIndex + 1;
+            
+            if (!gameState.completedGirls.includes(girlId)) {
+                gameState.completedGirls.push(girlId);
+                gameState.progress = Math.round((gameState.completedGirls.length / girls.length) * 100);
+                
+                // 更新进度
+                updateProgress();
+                
+                // 显示完成提示
+                setTimeout(() => {
+                    alert(`✓ 已完成与${girls[gameState.currentGirlIndex].name}的对话！\n已收集 ${gameState.completedGirls.length}/12 个心灵碎片`);
+                }, 300);
+            }
+            
+            // 返回地图
+            switchScreen('map');
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = gameState.completedGirls.length;
+            const progressText = document.getElementById('progress-text');
+            const progressCircle = document.getElementById('progress-circle');
+            
+            progressText.textContent = progress;
+            
+            // 计算进度圆环
+            const circumference = 2 * Math.PI * 36;
+            const offset = circumference - (progress / girls.length) * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+            
+            // 更新店铺状态
+            girls.forEach(girl => {
+                const shop = document.getElementById(`shop-${girl.id}`);
+                if (shop) {
+                    if (gameState.completedGirls.includes(girl.id)) {
+                        shop.classList.remove('active');
+                        shop.classList.add('completed');
+                        shop.style.boxShadow = `0 0 15px ${girl.color}`;
+                    } else {
+                        shop.classList.add('active');
+                        shop.classList.remove('completed');
+                    }
+                }
+            });
+            
+            // 更新圣诞树状态
+            const finalTree = document.getElementById('final-tree');
+            if (gameState.completedGirls.length === girls.length) {
+                finalTree.style.cursor = 'pointer';
+                finalTree.style.animation = 'pulse-glow 2s infinite';
+            }
+        }
+
+        // 创建装饰品
+        function createOrnaments() {
+            const tree = document.getElementById('big-tree');
+            
+            // 清空现有装饰品
+            const existingOrnaments = document.querySelectorAll('.ornament');
+            existingOrnaments.forEach(ornament => ornament.remove());
+            
+            // 添加装饰品
+            girls.forEach(girl => {
+                if (gameState.completedGirls.includes(girl.id)) {
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = Math.random() * 180 + 100;
+                    
+                    const x = 250 + Math.cos(angle) * distance;
+                    const y = 400 - Math.sin(angle) * distance;
+                    
+                    const ornament = document.createElement('div');
+                    ornament.className = 'ornament';
+                    ornament.style.left = `${x}px`;
+                    ornament.style.top = `${y}px`;
+                    ornament.style.backgroundColor = girl.color;
+                    ornament.title = girl.name;
+                    
+                    // 添加点击事件显示信息
+                    ornament.addEventListener('click', () => {
+                        alert(`${girl.name}的祝福：\n${girl.dialogues[girl.dialogues.length - 1]}`);
+                    });
+                    
+                    tree.appendChild(ornament);
+                }
+            });
+        }
+
+        // 挂上心愿
+        function hangWish() {
+            const wishText = document.getElementById('wish-textarea').value.trim();
+            
+            if (!wishText) {
+                alert('请写下你的圣诞心愿！');
+                return;
+            }
+            
+            if (wishText.length > 140) {
+                alert('心愿不能超过140字！');
+                return;
+            }
+            
+            // 创建心愿装饰品
+            const tree = document.getElementById('big-tree');
+            const x = 250 + (Math.random() - 0.5) * 100;
+            const y = 200 + Math.random() * 200;
+            
+            const wishOrnament = document.createElement('div');
+            wishOrnament.className = 'ornament';
+            wishOrnament.style.left = `${x}px`;
+            wishOrnament.style.top = `${y}px`;
+            wishOrnament.style.backgroundColor = gameState.wishColor;
+            wishOrnament.style.width = '40px';
+            wishOrnament.style.height = '40px';
+            wishOrnament.style.borderRadius = '5px';
+            wishOrnament.style.display = 'flex';
+            wishOrnament.style.justifyContent = 'center';
+            wishOrnament.style.alignItems = 'center';
+            wishOrnament.innerHTML = '<i class="fas fa-star" style="color: white; font-size: 16px;"></i>';
+            wishOrnament.title = wishText.length > 30 ? wishText.substring(0, 30) + '...' : wishText;
+            
+            // 添加到树上
+            tree.appendChild(wishOrnament);
+            
+            // 显示成功消息
+            alert('✨ 心愿已挂上圣诞树！\n愿你的愿望成真！🎄');
+            
+            // 清空输入框
+            document.getElementById('wish-textarea').value = '';
+        }
+
+        // 返回地图
+        function returnToMap() {
+            switchScreen('map');
+        }
+
+        // 地图缩放
+        function zoomMap(factor) {
+            const mapContent = document.getElementById('map-content');
+            const currentScale = parseFloat(getComputedStyle(mapContent).transform.split(',')[3]) || 1;
+            const newScale = Math.max(0.5, Math.min(2, currentScale * factor));
+            
+            mapContent.style.transform = `scale(${newScale})`;
+        }
+
+        // 重置地图视图
+        function resetMapView() {
+            const mapContent = document.getElementById('map-content');
+            mapContent.style.transform = 'scale(1)';
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
