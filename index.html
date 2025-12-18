@@ -1383,6 +1383,45 @@ function renderGirls() {
         map.appendChild(node);
     });
 }
+        function renderGirls() {
+    const map = document.getElementById('city-map');
+    
+    girls.forEach(girl => {
+        const node = document.createElement('div');
+        node.className = 'girl-node';
+        node.style.left = `${girl.position.x}%`;
+        node.style.top = `${girl.position.y}%`;
+
+        node.innerHTML = `
+            <div class="avatar-container" style="border: 3px solid ${girl.color}; position: relative; width: 80px; height: 80px;">
+                <img src="${girl.portrait}" alt="${girl.name}" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display: block;">
+                
+                <span class="icon-tag" style="
+                    position: absolute; 
+                    bottom: -5px; 
+                    right: -5px; 
+                    background: white; 
+                    border-radius: 50%; 
+                    width: 25px; 
+                    height: 25px; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                    font-size: 14px;
+                ">
+                    ${girl.icon}
+                </span>
+            </div>
+            <div class="label-tag" style="text-align: center; margin-top: 8px; font-weight: bold; color: ${girl.color};">
+                ${girl.name}
+            </div>
+        `;
+        
+        map.appendChild(node);
+    });
+}
+
         // 游戏状态
         const gameState = {
             currentScreen: 'loading',
