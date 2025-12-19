@@ -14,42 +14,18 @@
             box-sizing: border-box;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: fixed;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background: #0a1525;
             color: #f0e6d2;
-            width: 100%;
-            height: 100%;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
             position: fixed;
             top: 0;
             left: 0;
-            overflow: hidden;
-            /* 16:9 比例 */
-            aspect-ratio: 16/9;
-            margin: 0 auto;
-        }
-
-        /* 对于不支持 aspect-ratio 的浏览器 */
-        @media (max-aspect-ratio: 16/9) {
-            body {
-                height: calc(100vw * 9 / 16);
-            }
-        }
-
-        @media (min-aspect-ratio: 16/9) {
-            body {
-                width: calc(100vh * 16 / 9);
-            }
         }
 
         .screen {
@@ -97,23 +73,22 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            width: 100%;
-            padding: 0 20px;
+            width: 90%;
+            max-width: 400px;
         }
 
         .gate {
             position: relative;
-            width: min(85vw, 400px);
-            height: min(100vw, 500px);
-            max-width: 400px;
-            max-height: 500px;
+            width: 100%;
+            height: 60vh;
+            max-height: 400px;
             margin: 0 auto;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
 
-        .gate:hover {
-            transform: scale(1.02);
+        .gate:active {
+            transform: scale(0.98);
         }
 
         .gate-frame {
@@ -121,12 +96,12 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #3d2c1a 0%, #2a1c10 100%);
-            border-radius: 20px;
+            border-radius: 15px;
             box-shadow: 
-                inset 0 0 30px rgba(139, 69, 19, 0.7),
-                0 0 60px rgba(255, 215, 0, 0.4),
-                0 10px 40px rgba(0, 0, 0, 0.7);
-            border: min(0.8vw, 8px) solid #5d4037;
+                inset 0 0 20px rgba(139, 69, 19, 0.7),
+                0 0 40px rgba(255, 215, 0, 0.4),
+                0 5px 20px rgba(0, 0, 0, 0.7);
+            border: 6px solid #5d4037;
         }
 
         .gate-door {
@@ -135,11 +110,11 @@
             height: 85%;
             top: 7%;
             background: linear-gradient(135deg, #5d4037 0%, #3e2723 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             transition: transform 1.5s ease;
             box-shadow: 
-                inset 0 0 20px rgba(0, 0, 0, 0.8),
-                0 5px 15px rgba(0, 0, 0, 0.5);
+                inset 0 0 15px rgba(0, 0, 0, 0.8),
+                0 3px 10px rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -159,28 +134,28 @@
 
         .door-knocker {
             position: absolute;
-            width: min(6vw, 50px);
-            height: min(8vw, 70px);
+            width: 40px;
+            height: 55px;
             background: radial-gradient(circle at 30% 30%, #d4af37 0%, #b8860b 100%);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: 
-                0 5px 15px rgba(0, 0, 0, 0.5),
-                inset 0 2px 5px rgba(255, 255, 255, 0.3);
+                0 3px 10px rgba(0, 0, 0, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
             cursor: pointer;
             animation: pulse 2s infinite;
             z-index: 10;
         }
 
-        .door-knocker:hover {
+        .door-knocker:active {
             animation: shake 0.5s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
         }
 
         @keyframes shake {
@@ -190,8 +165,8 @@
         }
 
         .door-knocker-inner {
-            width: min(2vw, 20px);
-            height: min(3vw, 30px);
+            width: 15px;
+            height: 22px;
             background: #8b4513;
             border-radius: 50%;
         }
@@ -207,8 +182,8 @@
 
         .holly {
             position: absolute;
-            width: min(12vw, 100px);
-            height: min(10vw, 80px);
+            width: 60px;
+            height: 45px;
             top: 10%;
             left: 50%;
             transform: translateX(-50%);
@@ -219,33 +194,33 @@
         .holly::after {
             content: '';
             position: absolute;
-            width: min(2vw, 15px);
-            height: min(2vw, 15px);
+            width: 9px;
+            height: 9px;
             background: #d32f2f;
             border-radius: 50%;
             top: 20%;
             left: 30%;
             box-shadow: 
-                min(3vw, 25px) min(1vw, 10px) 0 #d32f2f,
-                min(6vw, 50px) 0 0 #d32f2f;
+                15px 6px 0 #d32f2f,
+                30px 0 0 #d32f2f;
         }
 
         .lights {
             position: absolute;
             width: 100%;
-            height: min(2.5vw, 20px);
+            height: 15px;
             top: 15%;
             display: flex;
             justify-content: space-around;
         }
 
         .light {
-            width: min(1.5vw, 12px);
-            height: min(1.5vw, 12px);
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: gold;
             animation: twinkle 1.5s infinite;
-            box-shadow: 0 0 10px gold;
+            box-shadow: 0 0 6px gold;
         }
 
         @keyframes twinkle {
@@ -254,27 +229,28 @@
         }
 
         .gate-text {
-            margin-top: min(4vw, 30px);
+            margin-top: 15px;
             font-family: 'Cedarville Cursive', cursive;
-            font-size: min(4vw, 24px);
+            font-size: 18px;
             color: #f0e6d2;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
-            letter-spacing: min(0.3vw, 2px);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+            letter-spacing: 1px;
             animation: textGlow 3s infinite;
         }
 
         @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-            50% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.5); }
+            0%, 100% { text-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 0 16px rgba(255, 215, 0, 0.5); }
         }
 
         .loading-progress {
             position: absolute;
-            bottom: 20%;
-            width: min(80vw, 300px);
-            height: min(0.6vw, 4px);
+            bottom: 15%;
+            width: 80%;
+            max-width: 250px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: min(0.3vw, 2px);
+            border-radius: 2px;
             overflow: hidden;
         }
 
@@ -282,7 +258,7 @@
             height: 100%;
             background: linear-gradient(90deg, #d4af37, #ffd700);
             width: 0%;
-            border-radius: min(0.3vw, 2px);
+            border-radius: 2px;
             transition: width 0.3s ease;
         }
 
@@ -299,7 +275,6 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            perspective: 1000px;
         }
 
         .map-background {
@@ -324,7 +299,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            transform-style: preserve-3d;
             transition: transform 0.5s ease;
         }
 
@@ -333,8 +307,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: min(18vw, 120px);
-            height: min(30vw, 200px);
+            width: 80px;
+            height: 130px;
             z-index: 5;
             cursor: pointer;
         }
@@ -344,55 +318,55 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: min(3vw, 20px);
-            height: min(6vw, 40px);
+            width: 12px;
+            height: 25px;
             background: #8b4513;
-            border-radius: min(0.8vw, 5px);
+            border-radius: 3px;
         }
 
         .tree-body {
             position: absolute;
-            bottom: min(6vw, 40px);
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: min(9vw, 60px) solid transparent;
-            border-right: min(9vw, 60px) solid transparent;
-            border-bottom: min(15vw, 100px) solid #2e7d32;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 65px solid #2e7d32;
         }
 
         .tree-body::before {
             content: '';
             position: absolute;
-            top: min(4.5vw, 30px);
-            left: min(-7.5vw, -50px);
+            top: 20px;
+            left: -30px;
             width: 0;
             height: 0;
-            border-left: min(7.5vw, 50px) solid transparent;
-            border-right: min(7.5vw, 50px) solid transparent;
-            border-bottom: min(12vw, 80px) solid #388e3c;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 50px solid #388e3c;
         }
 
         .tree-body::after {
             content: '';
             position: absolute;
-            top: min(9vw, 60px);
-            left: min(-6vw, -40px);
+            top: 40px;
+            left: -25px;
             width: 0;
             height: 0;
-            border-left: min(6vw, 40px) solid transparent;
-            border-right: min(6vw, 40px) solid transparent;
-            border-bottom: min(9vw, 60px) solid #43a047;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 40px solid #43a047;
         }
 
         .tree-star {
             position: absolute;
-            top: min(-3vw, -20px);
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            width: min(4.5vw, 30px);
-            height: min(4.5vw, 30px);
+            width: 20px;
+            height: 20px;
             background: gold;
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             animation: starGlow 2s infinite;
@@ -400,8 +374,8 @@
         }
 
         @keyframes starGlow {
-            0%, 100% { box-shadow: 0 0 10px gold; }
-            50% { box-shadow: 0 0 25px gold, 0 0 40px gold; }
+            0%, 100% { box-shadow: 0 0 8px gold; }
+            50% { box-shadow: 0 0 16px gold, 0 0 25px gold; }
         }
 
         .map-snow {
@@ -414,23 +388,23 @@
 
         .map-controls {
             position: absolute;
-            bottom: min(3vw, 20px);
-            right: min(3vw, 20px);
+            bottom: 15px;
+            right: 15px;
             display: flex;
             flex-direction: column;
-            gap: min(1.5vw, 10px);
+            gap: 8px;
             z-index: 100;
         }
 
         .control-btn {
-            width: min(8vw, 50px);
-            height: min(8vw, 50px);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: min(0.3vw, 2px) solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: min(3vw, 20px);
+            font-size: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -438,16 +412,16 @@
             transition: all 0.3s ease;
         }
 
-        .control-btn:hover {
+        .control-btn:active {
             background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
+            transform: scale(0.95);
         }
 
         .shop {
             position: absolute;
-            width: min(12vw, 80px);
-            height: min(12vw, 80px);
-            border-radius: min(1.5vw, 10px);
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 10;
@@ -455,35 +429,35 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            padding-bottom: min(0.8vw, 5px);
+            padding-bottom: 3px;
         }
 
-        .shop:hover {
-            transform: translateY(-5px) scale(1.05);
+        .shop:active {
+            transform: translateY(-3px) scale(1.05);
             z-index: 20;
         }
 
         .shop-building {
-            width: min(9vw, 60px);
-            height: min(7.5vw, 50px);
-            border-radius: min(1.2vw, 8px) min(1.2vw, 8px) 0 0;
+            width: 38px;
+            height: 32px;
+            border-radius: 5px 5px 0 0;
             position: relative;
         }
 
         .shop-roof {
             width: 0;
             height: 0;
-            border-left: min(4.5vw, 30px) solid transparent;
-            border-right: min(4.5vw, 30px) solid transparent;
-            border-bottom: min(3vw, 20px) solid #8b4513;
+            border-left: 19px solid transparent;
+            border-right: 19px solid transparent;
+            border-bottom: 12px solid #8b4513;
             position: absolute;
-            top: min(-3vw, -20px);
+            top: -12px;
             left: 0;
         }
 
         .shop-girl {
-            width: min(4.5vw, 30px);
-            height: min(6vw, 40px);
+            width: 18px;
+            height: 24px;
             position: absolute;
             bottom: 0;
             left: 50%;
@@ -500,12 +474,12 @@
         }
 
         .shop-name {
-            font-size: min(1.8vw, 12px);
-            margin-top: min(0.8vw, 5px);
+            font-size: 9px;
+            margin-top: 2px;
             text-align: center;
             font-weight: 500;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            max-width: min(12vw, 80px);
+            max-width: 50px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -521,22 +495,22 @@
         }
 
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 12px rgba(255, 255, 255, 0.8); }
         }
 
         .progress-ring {
             position: absolute;
-            top: min(3vw, 20px);
-            left: min(3vw, 20px);
-            width: min(12vw, 80px);
-            height: min(12vw, 80px);
+            top: 15px;
+            left: 15px;
+            width: 60px;
+            height: 60px;
             z-index: 100;
         }
 
         .ring-circle {
             fill: none;
-            stroke-width: 8;
+            stroke-width: 6;
             stroke-linecap: round;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
@@ -548,8 +522,8 @@
 
         .ring-progress {
             stroke: #ffd700;
-            stroke-dasharray: 226;
-            stroke-dashoffset: 226;
+            stroke-dasharray: 160;
+            stroke-dashoffset: 160;
             transition: stroke-dashoffset 1s ease;
         }
 
@@ -558,12 +532,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: min(2.7vw, 18px);
+            font-size: 14px;
             font-weight: bold;
             color: #ffd700;
         }
 
-        /* ========== 对话界面 ========== */
+        /* ========== 对话界面 - 手机优化 ========== */
         #dialogue-screen {
             background: #0a1525;
             opacity: 0;
@@ -579,66 +553,60 @@
             flex-direction: column;
         }
 
-        /* 上方：女孩立绘区域 */
+        /* 上方：女孩立绘区域 - 手机优化 */
         .girl-portrait {
             width: 100%;
-            height: 50%;
+            height: 40%;
             background: rgba(10, 21, 37, 0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: min(3vw, 20px);
+            padding: 10px;
             position: relative;
         }
 
         .girl-image-container {
-            width: min(45vw, 300px);
-            height: min(60vw, 400px);
-            border-radius: min(2.2vw, 15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            width: 150px;
+            height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
-            border: min(0.3vw, 2px) solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
             position: relative;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
         }
 
         .girl-portrait-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: min(2.2vw, 15px);
+            border-radius: 10px;
         }
 
         .girl-name {
-            margin-top: min(4vw, 20px);
-            font-size: min(5vw, 32px);
+            margin-top: 8px;
+            font-size: 20px;
             font-weight: bold;
             color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
             text-align: center;
         }
 
         .girl-title {
-            font-size: min(3vw, 18px);
+            font-size: 12px;
             color: #b0bec5;
-            margin-top: min(0.8vw, 5px);
-            margin-bottom: min(2.2vw, 15px);
+            margin-top: 2px;
+            margin-bottom: 5px;
             text-align: center;
         }
 
-        /* 下方：对话区域 */
+        /* 下方：对话区域 - 手机优化 */
         .dialogue-area {
             width: 100%;
-            height: 50%;
-            padding: min(4vw, 20px);
+            height: 60%;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -661,73 +629,71 @@
         .dialogue-text {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: min(3vw, 20px);
-            padding: min(4vw, 20px);
-            min-height: min(45vw, 300px);
-            border: min(0.3vw, 2px) solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: min(4vw, 20px);
-            font-size: min(3.5vw, 20px);
-            line-height: 1.6;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 120px;
+            max-height: 120px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.4;
             overflow-y: auto;
             font-family: 'Cedarville Cursive', cursive;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .dialogue-text:hover {
+        .dialogue-text:active {
             background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-5px);
+            transform: translateY(-2px);
         }
 
         .dialogue-controls {
             display: flex;
             justify-content: space-between;
-            margin-top: min(4vw, 20px);
-            gap: min(2vw, 10px);
+            gap: 10px;
         }
 
         .control-button {
             flex: 1;
-            padding: min(2vw, 12px) min(4vw, 20px);
+            padding: 10px;
             background: rgba(255, 255, 255, 0.1);
-            border: min(0.3vw, 2px) solid rgba(255, 255, 255, 0.2);
-            border-radius: min(1.5vw, 10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
             color: white;
-            font-size: min(2.5vw, 16px);
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
         }
 
-        .control-button:hover {
+        .control-button:active {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .close-dialogue {
             position: absolute;
-            top: min(3vw, 20px);
-            right: min(3vw, 20px);
-            width: min(8vw, 50px);
-            height: min(8vw, 50px);
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: min(4vw, 24px);
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 100;
         }
 
-        .close-dialogue:hover {
+        .close-dialogue:active {
             background: rgba(255, 255, 255, 0.2);
             transform: rotate(90deg);
         }
-
-        /* 已删除 .dialogue-indicator */
 
         /* ========== 圣诞树界面 ========== */
         #tree-screen {
@@ -747,14 +713,15 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: min(4vw, 20px);
+            padding: 15px;
         }
 
         .big-tree {
-            width: min(75vw, 500px);
-            height: min(105vw, 700px);
+            width: 200px;
+            height: 280px;
             position: relative;
             flex-shrink: 0;
+            margin-bottom: 15px;
         }
 
         .big-tree-body {
@@ -764,34 +731,34 @@
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: min(30vw, 200px) solid transparent;
-            border-right: min(30vw, 200px) solid transparent;
-            border-bottom: min(60vw, 400px) solid #1b5e20;
+            border-left: 80px solid transparent;
+            border-right: 80px solid transparent;
+            border-bottom: 160px solid #1b5e20;
             z-index: 5;
         }
 
         .big-tree-body::before {
             content: '';
             position: absolute;
-            top: min(15vw, 100px);
-            left: min(-22.5vw, -150px);
+            top: 40px;
+            left: -60px;
             width: 0;
             height: 0;
-            border-left: min(22.5vw, 150px) solid transparent;
-            border-right: min(22.5vw, 150px) solid transparent;
-            border-bottom: min(45vw, 300px) solid #2e7d32;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid #2e7d32;
         }
 
         .big-tree-body::after {
             content: '';
             position: absolute;
-            top: min(30vw, 200px);
-            left: min(-15vw, -100px);
+            top: 80px;
+            left: -40px;
             width: 0;
             height: 0;
-            border-left: min(15vw, 100px) solid transparent;
-            border-right: min(15vw, 100px) solid transparent;
-            border-bottom: min(30vw, 200px) solid #388e3c;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 80px solid #388e3c;
         }
 
         .big-tree-trunk {
@@ -799,20 +766,20 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: min(9vw, 60px);
-            height: min(15vw, 100px);
+            width: 24px;
+            height: 40px;
             background: #5d4037;
-            border-radius: min(1.5vw, 10px);
+            border-radius: 4px;
             z-index: 4;
         }
 
         .big-tree-star {
             position: absolute;
-            top: min(-6vw, -40px);
+            top: -16px;
             left: 50%;
             transform: translateX(-50%);
-            width: min(12vw, 80px);
-            height: min(12vw, 80px);
+            width: 32px;
+            height: 32px;
             background: gold;
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             animation: starGlow 2s infinite;
@@ -821,57 +788,58 @@
 
         .ornament {
             position: absolute;
-            width: min(4.5vw, 30px);
-            height: min(4.5vw, 30px);
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             cursor: pointer;
             z-index: 6;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
         }
 
-        .ornament:hover {
+        .ornament:active {
             transform: scale(1.2);
         }
 
         .wish-section {
-            width: min(90vw, 400px);
+            width: 100%;
+            max-width: 280px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: min(3vw, 20px);
-            padding: min(4vw, 30px);
-            border: min(0.3vw, 2px) solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
         .wish-title {
-            font-size: min(4.5vw, 28px);
+            font-size: 16px;
             color: #ffd700;
-            margin-bottom: min(3vw, 20px);
+            margin-bottom: 10px;
             text-align: center;
         }
 
         .wish-paper {
             background: url('https://www.transparenttextures.com/patterns/parchment.png');
             background-color: #f5e9d4;
-            border-radius: min(1.5vw, 10px);
-            padding: min(3vw, 20px);
-            min-height: min(30vw, 200px);
-            margin-bottom: min(3vw, 20px);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 12px;
+            min-height: 80px;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
             position: relative;
         }
 
         .wish-textarea {
             width: 100%;
-            height: min(27vw, 180px);
+            height: 60px;
             background: transparent;
             border: none;
             resize: none;
             font-family: 'Cedarville Cursive', cursive;
-            font-size: min(2.7vw, 18px);
+            font-size: 12px;
             color: #5d4037;
-            line-height: 1.5;
+            line-height: 1.3;
         }
 
         .wish-textarea:focus {
@@ -882,21 +850,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: min(3vw, 20px);
-            gap: min(2vw, 10px);
+            margin-top: 10px;
+            gap: 8px;
         }
 
         .color-picker {
             display: flex;
-            gap: min(1.5vw, 10px);
+            gap: 6px;
         }
 
         .color-option {
-            width: min(4.5vw, 30px);
-            height: min(4.5vw, 30px);
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             cursor: pointer;
-            border: min(0.3vw, 2px) solid transparent;
+            border: 2px solid transparent;
             transition: all 0.3s ease;
         }
 
@@ -906,379 +874,232 @@
         }
 
         .wish-button {
-            padding: min(2vw, 12px) min(4vw, 30px);
+            padding: 8px 15px;
             background: linear-gradient(135deg, #d4af37, #ffd700);
             border: none;
-            border-radius: min(1.5vw, 10px);
+            border-radius: 6px;
             color: #0a1525;
             font-weight: bold;
-            font-size: min(2.5vw, 16px);
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .wish-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        .wish-button:active {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
         }
 
         .return-to-map {
             position: absolute;
-            top: min(3vw, 20px);
-            left: min(3vw, 20px);
-            padding: min(2vw, 12px) min(4vw, 25px);
+            top: 10px;
+            left: 10px;
+            padding: 8px 12px;
             background: rgba(255, 255, 255, 0.1);
-            border: min(0.3vw, 2px) solid rgba(255, 255, 255, 0.2);
-            border-radius: min(1.5vw, 10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
             color: white;
-            font-size: min(2.5vw, 16px);
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 100;
         }
 
-        .return-to-map:hover {
+        .return-to-map:active {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
-        /* 触摸优化 */
-        @media (hover: none) and (pointer: coarse) {
-            .gate:hover {
-                transform: none;
-            }
-            
-            .control-btn:hover {
-                transform: none;
-                background: rgba(255, 255, 255, 0.1);
-            }
-            
-            .shop:hover {
-                transform: none;
-            }
-            
-            .dialogue-text:hover {
-                transform: none;
-                background: rgba(255, 255, 255, 0.05);
-            }
-            
-            .control-button:hover {
-                transform: none;
-                background: rgba(255, 255, 255, 0.1);
-            }
-            
-            .close-dialogue:hover {
-                transform: none;
-                background: rgba(255, 255, 255, 0.1);
-            }
-            
-            .wish-button:hover {
-                transform: none;
-                box-shadow: none;
-            }
-            
-            .return-to-map:hover {
-                transform: none;
-                background: rgba(255, 255, 255, 0.1);
-            }
-            
-            .ornament:hover {
-                transform: none;
-            }
-            
-            /* 添加触摸反馈 */
-            .gate:active {
-                transform: scale(0.98);
-            }
-            
-            .control-btn:active {
-                background: rgba(255, 255, 255, 0.2);
-                transform: scale(0.95);
-            }
-            
-            .shop:active {
-                transform: translateY(-2px) scale(1.03);
-            }
-            
-            .dialogue-text:active {
-                background: rgba(255, 255, 255, 0.08);
-                transform: translateY(-2px);
-            }
-            
-            .control-button:active {
-                background: rgba(255, 255, 255, 0.2);
-                transform: translateY(-1px);
-            }
-            
-            .close-dialogue:active {
-                background: rgba(255, 255, 255, 0.2);
-                transform: rotate(90deg);
-            }
-            
-            .wish-button:active {
-                background: linear-gradient(135deg, #b8860b, #ffcc00);
-                transform: translateY(-1px);
-            }
-            
-            .return-to-map:active {
-                background: rgba(255, 255, 255, 0.2);
-                transform: translateY(-1px);
-            }
-        }
-
-        /* ========== 响应式设计 ========== */
-        @media (max-width: 768px) {
-            .dialogue-container {
-                flex-direction: column;
-            }
-            
-            .girl-portrait {
-                height: 45%;
-            }
-            
-            .dialogue-area {
-                height: 55%;
-                padding: min(4vw, 15px);
-            }
-            
-            .girl-image-container {
-                width: min(40vw, 250px);
-                height: min(53vw, 350px);
-            }
-            
-            .tree-container {
-                padding: min(3vw, 15px);
-            }
-            
-            .wish-section {
-                width: 95%;
-                padding: min(4vw, 20px);
-            }
-            
-            .control-button {
-                padding: min(2.5vw, 10px) min(3vw, 15px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .gate {
-                width: min(90vw, 350px);
-                height: min(112vw, 450px);
-            }
-            
-            .girl-name {
-                font-size: min(6vw, 28px);
-            }
-            
-            .girl-title {
-                font-size: min(3.5vw, 16px);
-            }
-            
-            .dialogue-text {
-                font-size: min(4vw, 18px);
-                padding: min(4vw, 15px);
-            }
-            
-            .control-button {
-                font-size: min(3vw, 14px);
-            }
-            
-            .big-tree {
-                width: min(85vw, 400px);
-                height: min(119vw, 600px);
-            }
-            
-            .wish-title {
-                font-size: min(5vw, 24px);
-            }
-            
-            .wish-textarea {
-                font-size: min(3vw, 16px);
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1200px) {
-            .girl-portrait {
-                width: 40%;
-                height: 100%;
-            }
-            
-            .dialogue-area {
-                width: 60%;
-                height: 100%;
-            }
-            
+        /* ========== 横屏优化 ========== */
+        @media (orientation: landscape) {
             .dialogue-container {
                 flex-direction: row;
             }
             
-            .girl-image-container {
-                width: min(30vw, 250px);
-                height: min(40vw, 350px);
-            }
-        }
-
-        @media (min-width: 1201px) {
             .girl-portrait {
                 width: 35%;
                 height: 100%;
+                padding: 10px;
             }
             
             .dialogue-area {
                 width: 65%;
                 height: 100%;
-            }
-            
-            .dialogue-container {
-                flex-direction: row;
+                padding: 15px;
             }
             
             .girl-image-container {
-                width: 300px;
-                height: 400px;
-            }
-            
-            .tree-container {
-                flex-direction: row;
-                gap: min(6vw, 40px);
-            }
-            
-            .wish-section {
-                position: relative;
-                right: 0;
-                top: 0;
-                transform: none;
-                width: min(40vw, 400px);
-                margin: 0;
-            }
-        }
-
-        /* 横屏优化 */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .dialogue-container {
-                flex-direction: row;
-            }
-            
-            .girl-portrait {
-                width: 40%;
-                height: 100%;
-                padding: min(2vw, 15px);
-            }
-            
-            .dialogue-area {
-                width: 60%;
-                height: 100%;
-                padding: min(3vw, 15px);
-            }
-            
-            .girl-image-container {
-                width: min(30vw, 200px);
-                height: min(40vw, 250px);
+                width: 120px;
+                height: 160px;
             }
             
             .girl-name {
-                margin-top: min(2vw, 10px);
-                font-size: min(3.5vw, 24px);
+                font-size: 16px;
+                margin-top: 5px;
             }
             
             .girl-title {
-                font-size: min(2vw, 14px);
+                font-size: 10px;
             }
             
             .dialogue-text {
-                min-height: min(35vw, 200px);
-                font-size: min(2.5vw, 16px);
-                padding: min(3vw, 15px);
+                min-height: 100px;
+                max-height: 100px;
+                font-size: 12px;
+                padding: 12px;
             }
             
             .control-button {
-                padding: min(1.5vw, 8px) min(3vw, 15px);
-                font-size: min(2vw, 14px);
+                padding: 8px;
+                font-size: 11px;
             }
             
+            /* 圣诞树界面横屏 */
             .tree-container {
                 flex-direction: row;
-                gap: min(4vw, 20px);
+                gap: 15px;
             }
             
             .big-tree {
-                width: min(50vw, 400px);
-                height: min(70vw, 500px);
+                width: 180px;
+                height: 250px;
+                margin-bottom: 0;
+                margin-right: 15px;
+            }
+            
+            .big-tree-body {
+                border-left: 70px solid transparent;
+                border-right: 70px solid transparent;
+                border-bottom: 140px solid #1b5e20;
+            }
+            
+            .big-tree-body::before {
+                left: -52px;
+                border-left: 52px solid transparent;
+                border-right: 52px solid transparent;
+                border-bottom: 105px solid #2e7d32;
+            }
+            
+            .big-tree-body::after {
+                left: -35px;
+                border-left: 35px solid transparent;
+                border-right: 35px solid transparent;
+                border-bottom: 70px solid #388e3c;
             }
             
             .wish-section {
-                width: min(45vw, 350px);
-                padding: min(3vw, 20px);
+                width: 240px;
+                padding: 12px;
             }
             
             .wish-paper {
-                min-height: min(25vw, 150px);
+                min-height: 70px;
             }
             
             .wish-textarea {
-                height: min(22vw, 130px);
-                font-size: min(2vw, 14px);
+                height: 50px;
+                font-size: 11px;
             }
         }
 
-        /* 超小屏幕优化 */
-        @media (max-width: 360px) {
+        /* 大屏幕手机 */
+        @media (min-height: 700px) {
             .gate {
-                width: min(95vw, 300px);
-                height: min(133vw, 400px);
+                height: 65vh;
+                max-height: 450px;
             }
             
-            .gate-text {
-                font-size: min(4.5vw, 20px);
-            }
-            
-            .shop {
-                width: min(15vw, 70px);
-                height: min(15vw, 70px);
-            }
-            
-            .shop-name {
-                font-size: min(2vw, 10px);
+            .girl-image-container {
+                width: 180px;
+                height: 240px;
             }
             
             .girl-name {
-                font-size: min(6.5vw, 24px);
+                font-size: 22px;
             }
             
             .dialogue-text {
-                font-size: min(4.5vw, 16px);
+                min-height: 140px;
+                max-height: 140px;
+                font-size: 15px;
             }
             
-            .control-button {
-                font-size: min(3.5vw, 12px);
-                padding: min(3vw, 8px) min(2vw, 10px);
+            .big-tree {
+                width: 220px;
+                height: 300px;
+            }
+            
+            .big-tree-body {
+                border-left: 90px solid transparent;
+                border-right: 90px solid transparent;
+                border-bottom: 180px solid #1b5e20;
+            }
+            
+            .big-tree-body::before {
+                left: -68px;
+                border-left: 68px solid transparent;
+                border-right: 68px solid transparent;
+                border-bottom: 135px solid #2e7d32;
+            }
+            
+            .big-tree-body::after {
+                left: -45px;
+                border-left: 45px solid transparent;
+                border-right: 45px solid transparent;
+                border-bottom: 90px solid #388e3c;
             }
         }
 
-        /* 防止文本溢出 */
-        .dialogue-text, .shop-name, .girl-name, .girl-title, .gate-text, .wish-textarea {
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            hyphens: auto;
+        /* 平板设备 */
+        @media (min-width: 768px) {
+            .gate {
+                height: 70vh;
+                max-height: 500px;
+            }
+            
+            .girl-image-container {
+                width: 220px;
+                height: 300px;
+            }
+            
+            .girl-name {
+                font-size: 24px;
+            }
+            
+            .dialogue-text {
+                min-height: 160px;
+                max-height: 160px;
+                font-size: 16px;
+            }
+            
+            .control-button {
+                font-size: 14px;
+                padding: 12px;
+            }
+            
+            .big-tree {
+                width: 250px;
+                height: 350px;
+            }
+            
+            .wish-section {
+                max-width: 320px;
+            }
         }
 
         /* 滚动条样式 */
         .dialogue-text::-webkit-scrollbar {
-            width: min(0.8vw, 6px);
+            width: 4px;
         }
 
         .dialogue-text::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: min(0.4vw, 3px);
+            border-radius: 2px;
         }
 
         .dialogue-text::-webkit-scrollbar-thumb {
             background: rgba(255, 215, 0, 0.3);
-            border-radius: min(0.4vw, 3px);
-        }
-
-        .dialogue-text::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 215, 0, 0.5);
+            border-radius: 2px;
         }
     </style>
 </head>
@@ -1352,6 +1173,7 @@
                 
                 <div class="girl-name" id="girl-name">Koko</div>
                 <div class="girl-title" id="girl-title">心跳共鸣电台</div>
+                <!-- 已删除"点击对话继续" -->
             </div>
             <div class="dialogue-area">
                 <div class="dialogue-background" id="dialogue-bg"></div>
@@ -1695,11 +1517,11 @@
             const snowContainer = document.getElementById('snowfall');
             const mapSnowContainer = document.getElementById('map-snow');
             
-            for(let i = 0; i < 80; i++) {
+            for(let i = 0; i < 60; i++) {
                 createSnowflake(snowContainer);
             }
             
-            for(let i = 0; i < 40; i++) {
+            for(let i = 0; i < 30; i++) {
                 createSnowflake(mapSnowContainer);
             }
         }
@@ -1708,7 +1530,7 @@
             const snowflake = document.createElement('div');
             snowflake.className = 'snowflake';
             
-            const size = Math.random() * 4 + 1;
+            const size = Math.random() * 3 + 1;
             const startX = Math.random() * 100;
             const duration = Math.random() * 10 + 10;
             const delay = Math.random() * 10;
@@ -1745,11 +1567,9 @@
 
         // 播放欢迎音频
         function playWelcomeAudio() {
-            // 静音播放以避免自动播放策略问题
             bellSound.volume = 0.3;
             bellSound.play().catch(e => console.log("音频播放需要用户交互"));
             
-            // 显示点击提示
             const gateText = document.querySelector('.gate-text');
             gateText.textContent = "点击门环进入游园会";
             gateText.style.animation = "textGlow 1.5s infinite";
@@ -1759,50 +1579,30 @@
         function setupEventListeners() {
             // 门环点击
             document.getElementById('door-knocker').addEventListener('click', openGate);
-            document.getElementById('door-knocker').addEventListener('touchstart', openGate);
             
             // 地图控制
             document.getElementById('zoom-in').addEventListener('click', () => zoomMap(1.2));
-            document.getElementById('zoom-in').addEventListener('touchstart', () => zoomMap(1.2));
-            
             document.getElementById('zoom-out').addEventListener('click', () => zoomMap(0.8));
-            document.getElementById('zoom-out').addEventListener('touchstart', () => zoomMap(0.8));
-            
             document.getElementById('reset-view').addEventListener('click', resetMapView);
-            document.getElementById('reset-view').addEventListener('touchstart', resetMapView);
             
             // 对话控制
             document.getElementById('close-dialogue').addEventListener('click', closeDialogue);
-            document.getElementById('close-dialogue').addEventListener('touchstart', closeDialogue);
-            
             document.getElementById('prev-dialogue').addEventListener('click', prevDialogue);
-            document.getElementById('prev-dialogue').addEventListener('touchstart', prevDialogue);
-            
             document.getElementById('next-dialogue').addEventListener('click', nextDialogue);
-            document.getElementById('next-dialogue').addEventListener('touchstart', nextDialogue);
             
             // 对话文本点击
             document.getElementById('dialogue-text').addEventListener('click', nextDialogue);
-            document.getElementById('dialogue-text').addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                nextDialogue();
-            });
             
             // 心愿控制
             document.getElementById('hang-wish').addEventListener('click', hangWish);
-            document.getElementById('hang-wish').addEventListener('touchstart', hangWish);
-            
             document.getElementById('return-to-map').addEventListener('click', returnToMap);
-            document.getElementById('return-to-map').addEventListener('touchstart', returnToMap);
             
             // 颜色选择
             document.querySelectorAll('.color-option').forEach(option => {
                 option.addEventListener('click', function() {
-                    selectColor(this);
-                });
-                option.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    selectColor(this);
+                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.wishColor = this.getAttribute('data-color');
                 });
             });
             
@@ -1812,17 +1612,6 @@
                     switchScreen('tree');
                 }
             });
-            document.getElementById('final-tree').addEventListener('touchstart', () => {
-                if (gameState.completedGirls.length === girls.length) {
-                    switchScreen('tree');
-                }
-            });
-        }
-
-        function selectColor(element) {
-            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            gameState.wishColor = element.getAttribute('data-color');
         }
 
         // 打开大门
@@ -1831,25 +1620,21 @@
             const rightDoor = document.querySelector('.right-door');
             const gate = document.getElementById('gate');
             
-            // 播放音效
             doorSound.volume = 0.3;
             doorSound.play().catch(e => console.log("音频播放需要用户交互"));
             
             bgMusic.volume = 0.3;
             bgMusic.play().catch(e => {
-                // 如果自动播放失败，等待用户交互后播放
                 document.addEventListener('click', function playMusic() {
                     bgMusic.play();
                     document.removeEventListener('click', playMusic);
                 }, { once: true });
             });
             
-            // 动画效果
             leftDoor.style.transform = 'perspective(1000px) rotateY(-100deg)';
             rightDoor.style.transform = 'perspective(1000px) rotateY(100deg)';
             gate.style.cursor = 'default';
             
-            // 过渡到地图界面
             setTimeout(() => {
                 switchScreen('map');
                 createShops();
@@ -1858,18 +1643,15 @@
 
         // 切换屏幕
         function switchScreen(screenName) {
-            // 隐藏所有屏幕
             Object.values(screens).forEach(screen => {
                 screen.style.opacity = '0';
                 screen.style.pointerEvents = 'none';
             });
             
-            // 显示目标屏幕
             screens[screenName].style.opacity = '1';
             screens[screenName].style.pointerEvents = 'auto';
             gameState.currentScreen = screenName;
             
-            // 特殊处理
             if (screenName === 'map') {
                 updateProgress();
             } else if (screenName === 'tree') {
@@ -1881,11 +1663,9 @@
         function createShops() {
             const mapContent = document.getElementById('map-content');
             
-            // 清空现有店铺
             const existingShops = document.querySelectorAll('.shop');
             existingShops.forEach(shop => shop.remove());
             
-            // 创建新店铺
             girls.forEach(girl => {
                 const shop = document.createElement('div');
                 shop.className = `shop ${gameState.completedGirls.includes(girl.id) ? 'completed' : 'active'}`;
@@ -1902,27 +1682,7 @@
                     <div class="shop-name">${girl.name}</div>
                 `;
                 
-                // 添加点击事件
                 shop.addEventListener('click', () => openDialogue(girl));
-                shop.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    openDialogue(girl);
-                });
-                
-                // 添加悬停事件（移动端不适用）
-                if (window.matchMedia("(hover: hover)").matches) {
-                    shop.addEventListener('mouseenter', () => {
-                        if (!gameState.completedGirls.includes(girl.id)) {
-                            shop.style.boxShadow = `0 0 20px ${girl.color}`;
-                        }
-                    });
-                    
-                    shop.addEventListener('mouseleave', () => {
-                        if (!gameState.completedGirls.includes(girl.id)) {
-                            shop.style.boxShadow = 'none';
-                        }
-                    });
-                }
                 
                 mapContent.appendChild(shop);
             });
@@ -1933,21 +1693,16 @@
             gameState.currentGirlIndex = girl.id - 1;
             gameState.dialogueStep = 0;
             
-            // 更新UI
             document.getElementById('girl-name').textContent = girl.name;
             document.getElementById('girl-title').textContent = girl.title;
             document.getElementById('dialogue-bg').style.backgroundColor = girl.color;
             document.getElementById('dialogue-text').textContent = girl.dialogues[0];
             
-            // 显示女孩的立绘图片
             const imgElement = document.getElementById('girl-portrait-img');
             imgElement.src = girl.portrait;
             imgElement.alt = `${girl.name}的立绘`;
             
-            // 更新按钮状态
             updateDialogueButtons();
-            
-            // 切换屏幕
             switchScreen('dialogue');
         }
 
@@ -1957,7 +1712,6 @@
             const prevBtn = document.getElementById('prev-dialogue');
             const nextBtn = document.getElementById('next-dialogue');
             
-            // 上一句按钮
             if (gameState.dialogueStep === 0) {
                 prevBtn.style.opacity = '0.5';
                 prevBtn.style.pointerEvents = 'none';
@@ -1966,7 +1720,6 @@
                 prevBtn.style.pointerEvents = 'auto';
             }
             
-            // 下一句按钮
             if (gameState.dialogueStep === girl.dialogues.length - 1) {
                 nextBtn.textContent = '完成对话';
             } else {
@@ -1994,12 +1747,10 @@
             const girl = girls[gameState.currentGirlIndex];
             
             if (gameState.dialogueStep < girl.dialogues.length - 1) {
-                // 还有更多对话
                 gameState.dialogueStep++;
                 document.getElementById('dialogue-text').textContent = girl.dialogues[gameState.dialogueStep];
                 updateDialogueButtons();
             } else {
-                // 对话结束
                 completeDialogue();
             }
         }
@@ -2012,16 +1763,13 @@
                 gameState.completedGirls.push(girlId);
                 gameState.progress = Math.round((gameState.completedGirls.length / girls.length) * 100);
                 
-                // 更新进度
                 updateProgress();
                 
-                // 显示完成提示
                 setTimeout(() => {
                     alert(`✓ 已完成与${girls[gameState.currentGirlIndex].name}的对话！\n已收集 ${gameState.completedGirls.length}/12 个心灵碎片`);
                 }, 300);
             }
             
-            // 返回地图
             switchScreen('map');
         }
 
@@ -2033,19 +1781,17 @@
             
             progressText.textContent = progress;
             
-            // 计算进度圆环
             const circumference = 2 * Math.PI * 36;
             const offset = circumference - (progress / girls.length) * circumference;
             progressCircle.style.strokeDashoffset = offset;
             
-            // 更新店铺状态
             girls.forEach(girl => {
                 const shop = document.getElementById(`shop-${girl.id}`);
                 if (shop) {
                     if (gameState.completedGirls.includes(girl.id)) {
                         shop.classList.remove('active');
                         shop.classList.add('completed');
-                        shop.style.boxShadow = `0 0 15px ${girl.color}`;
+                        shop.style.boxShadow = `0 0 10px ${girl.color}`;
                     } else {
                         shop.classList.add('active');
                         shop.classList.remove('completed');
@@ -2053,7 +1799,6 @@
                 }
             });
             
-            // 更新圣诞树状态
             const finalTree = document.getElementById('final-tree');
             if (gameState.completedGirls.length === girls.length) {
                 finalTree.style.cursor = 'pointer';
@@ -2065,18 +1810,16 @@
         function createOrnaments() {
             const tree = document.getElementById('big-tree');
             
-            // 清空现有装饰品
             const existingOrnaments = document.querySelectorAll('.ornament');
             existingOrnaments.forEach(ornament => ornament.remove());
             
-            // 添加装饰品
             girls.forEach(girl => {
                 if (gameState.completedGirls.includes(girl.id)) {
                     const angle = Math.random() * 2 * Math.PI;
-                    const distance = Math.random() * 180 + 100;
+                    const distance = Math.random() * 80 + 60;
                     
-                    const x = 250 + Math.cos(angle) * distance;
-                    const y = 400 - Math.sin(angle) * distance;
+                    const x = 100 + Math.cos(angle) * distance;
+                    const y = 140 - Math.sin(angle) * distance;
                     
                     const ornament = document.createElement('div');
                     ornament.className = 'ornament';
@@ -2085,12 +1828,7 @@
                     ornament.style.backgroundColor = girl.color;
                     ornament.title = girl.name;
                     
-                    // 添加点击事件显示信息
                     ornament.addEventListener('click', () => {
-                        alert(`${girl.name}的祝福：\n${girl.dialogues[girl.dialogues.length - 1]}`);
-                    });
-                    ornament.addEventListener('touchstart', (e) => {
-                        e.preventDefault();
                         alert(`${girl.name}的祝福：\n${girl.dialogues[girl.dialogues.length - 1]}`);
                     });
                     
@@ -2113,32 +1851,27 @@
                 return;
             }
             
-            // 创建心愿装饰品
             const tree = document.getElementById('big-tree');
-            const x = 250 + (Math.random() - 0.5) * 100;
-            const y = 200 + Math.random() * 200;
+            const x = 100 + (Math.random() - 0.5) * 60;
+            const y = 80 + Math.random() * 80;
             
             const wishOrnament = document.createElement('div');
             wishOrnament.className = 'ornament';
             wishOrnament.style.left = `${x}px`;
             wishOrnament.style.top = `${y}px`;
             wishOrnament.style.backgroundColor = gameState.wishColor;
-            wishOrnament.style.width = '40px';
-            wishOrnament.style.height = '40px';
-            wishOrnament.style.borderRadius = '5px';
+            wishOrnament.style.width = '25px';
+            wishOrnament.style.height = '25px';
+            wishOrnament.style.borderRadius = '3px';
             wishOrnament.style.display = 'flex';
             wishOrnament.style.justifyContent = 'center';
             wishOrnament.style.alignItems = 'center';
-            wishOrnament.innerHTML = '<i class="fas fa-star" style="color: white; font-size: 16px;"></i>';
-            wishOrnament.title = wishText.length > 30 ? wishText.substring(0, 30) + '...' : wishText;
+            wishOrnament.innerHTML = '<i class="fas fa-star" style="color: white; font-size: 12px;"></i>';
+            wishOrnament.title = wishText.length > 20 ? wishText.substring(0, 20) + '...' : wishText;
             
-            // 添加到树上
             tree.appendChild(wishOrnament);
             
-            // 显示成功消息
             alert('✨ 心愿已挂上圣诞树！\n愿你的愿望成真！🎄');
-            
-            // 清空输入框
             document.getElementById('wish-textarea').value = '';
         }
 
@@ -2152,7 +1885,6 @@
             const mapContent = document.getElementById('map-content');
             const currentScale = parseFloat(getComputedStyle(mapContent).transform.split(',')[3]) || 1;
             const newScale = Math.max(0.5, Math.min(2, currentScale * factor));
-            
             mapContent.style.transform = `scale(${newScale})`;
         }
 
@@ -2164,22 +1896,6 @@
 
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', init);
-        
-        // 防止页面滚动
-        document.addEventListener('touchmove', function(e) {
-            if(e.target.classList.contains('dialogue-text') || e.target.classList.contains('wish-textarea')) {
-                return;
-            }
-            e.preventDefault();
-        }, { passive: false });
-        
-        // 适应屏幕旋转
-        window.addEventListener('resize', function() {
-            // 重新调整布局
-            if (gameState.currentScreen === 'map') {
-                createShops();
-            }
-        });
     </script>
 </body>
 </html>
