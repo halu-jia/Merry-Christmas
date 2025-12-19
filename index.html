@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>星光圣诞游园会</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/halu-jia/Merry-Christmas/refs/heads/main/assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Inter:wght@300;400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -535,7 +536,7 @@
             color: #ffd700;
         }
 
-        /* ========== 对话界面 - 集成抠像立绘 ========== */
+        /* ========== 对话界面 ========== */
         #dialogue-screen {
             background: #0a1525;
             opacity: 0;
@@ -550,7 +551,7 @@
             height: 100%;
         }
 
-        /* 左侧：抠像立绘区域 */
+        /* 左侧：女孩立绘区域 */
         .girl-portrait {
             width: 35%;
             background: rgba(10, 21, 37, 0.8);
@@ -562,7 +563,7 @@
             position: relative;
         }
 
-        .portrait-canvas-container {
+        .girl-image-container {
             width: 300px;
             height: 400px;
             border-radius: 15px;
@@ -575,40 +576,16 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        .portrait-canvas {
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .girl-portrait-img {
             width: 100%;
             height: 100%;
-            display: block;
-        }
-
-        /* 上传按钮样式 */
-        .upload-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #d4af37, #ffd700);
-            border: none;
-            border-radius: 10px;
-            color: #0a1525;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .upload-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
-        }
-
-        .upload-btn i {
-            font-size: 16px;
-        }
-
-        #file-input {
-            display: none;
+            object-fit: cover;
+            border-radius: 15px;
         }
 
         .girl-name {
@@ -728,27 +705,6 @@
         @keyframes bounce {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(-10px); }
-        }
-
-        /* 默认占位符样式 */
-        .portrait-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 16px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .portrait-placeholder i {
-            font-size: 60px;
-            margin-bottom: 20px;
-            opacity: 0.5;
         }
 
         /* ========== 圣诞树界面 ========== */
@@ -968,7 +924,7 @@
             .gate { width: 350px; height: 450px; }
             .girl-portrait { width: 40%; }
             .dialogue-area { width: 60%; }
-            .portrait-canvas-container { width: 250px; height: 350px; }
+            .girl-image-container { width: 250px; height: 350px; }
         }
 
         @media (max-width: 768px) {
@@ -976,7 +932,7 @@
             .dialogue-container { flex-direction: column; }
             .girl-portrait { width: 100%; height: 45%; padding: 20px; }
             .dialogue-area { width: 100%; height: 55%; padding: 20px; }
-            .portrait-canvas-container { width: 200px; height: 280px; }
+            .girl-image-container { width: 200px; height: 280px; }
             .tree-container { flex-direction: column; }
             .wish-section { position: relative; right: 0; top: 0; transform: none; width: 100%; margin-top: 30px; }
         }
@@ -1046,16 +1002,12 @@
         <div class="dialogue-container">
             <div class="girl-portrait">
                 <!-- 女孩立绘显示区域 -->
-                <img id="girl-portrait" src="" alt="女孩立绘" class="adaptive-image" style="width: 300px; height: 400px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);">
+                <div class="girl-image-container">
+                    <img id="girl-portrait-img" src="" alt="女孩立绘" class="girl-portrait-img">
+                </div>
                 
                 <div class="girl-name" id="girl-name">Koko</div>
                 <div class="girl-title" id="girl-title">心跳共鸣电台</div>
-                
-                <!-- 上传按钮 -->
-                <input type="file" id="file-input" accept="image/*">
-                <button class="upload-btn" onclick="document.getElementById('file-input').click()">
-                    <i class="fas fa-upload"></i>上传立绘（自动抠像）
-                </button>
                 
                 <div class="dialogue-indicator">点击对话继续</div>
             </div>
@@ -1373,9 +1325,7 @@
             progress: 0,
             currentGirlIndex: 0,
             dialogueStep: 0,
-            wishColor: '#ff6b6b',
-            // 存储每个女孩的立绘数据（base64格式）
-            girlPortraits: {}
+            wishColor: '#ff6b6b'
         };
 
         // DOM元素
@@ -1478,9 +1428,6 @@
             
             // 对话文本点击
             document.getElementById('dialogue-text').addEventListener('click', nextDialogue);
-            
-            // 文件上传
-            document.getElementById('file-input').addEventListener('change', handleImageUpload);
             
             // 心愿控制
             document.getElementById('hang-wish').addEventListener('click', hangWish);
@@ -1604,75 +1551,15 @@
             document.getElementById('dialogue-text').textContent = girl.dialogues[0];
             
             // 显示女孩的立绘图片
-            const imgElement = document.getElementById('girl-portrait');
+            const imgElement = document.getElementById('girl-portrait-img');
             imgElement.src = girl.portrait;
+            imgElement.alt = `${girl.name}的立绘`;
             
             // 更新按钮状态
             updateDialogueButtons();
             
             // 切换屏幕
             switchScreen('dialogue');
-        }
-
-        // 处理图片上传
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const img = new Image();
-            img.onload = () => {
-                const girlId = girls[gameState.currentGirlIndex].id;
-                const imgElement = document.getElementById('girl-portrait');
-                
-                // 直接更新图片显示
-                imgElement.src = URL.createObjectURL(file);
-                
-                // 保存到状态
-                gameState.girlPortraits[girlId] = URL.createObjectURL(file);
-                
-                // 显示成功提示
-                showUploadSuccess();
-            };
-            img.src = URL.createObjectURL(file);
-            
-            // 清空文件输入，以便可以再次选择同一文件
-            e.target.value = '';
-        }
-
-        // 显示上传成功提示
-        function showUploadSuccess() {
-            const successMsg = document.createElement('div');
-            successMsg.style.cssText = `
-                position: absolute;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(76, 175, 80, 0.9);
-                color: white;
-                padding: 10px 20px;
-                border-radius: 20px;
-                font-weight: bold;
-                z-index: 1000;
-                animation: fadeInOut 2s ease;
-            `;
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeInOut {
-                    0%, 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-                    10%, 90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            successMsg.textContent = '✓ 立绘上传成功！';
-            document.querySelector('.girl-portrait').appendChild(successMsg);
-            
-            // 2秒后移除提示
-            setTimeout(() => {
-                successMsg.remove();
-                style.remove();
-            }, 2000);
         }
 
         // 更新对话按钮状态
